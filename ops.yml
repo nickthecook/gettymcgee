@@ -11,6 +11,10 @@ actions:
   stop:
     command: echo update me too
     description: stops the app
+  rails:
+    command: bin/rails
+    alias: r
+    load_secrets: true
   test:
     command: rspec
     alias: t
