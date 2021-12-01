@@ -5,25 +5,23 @@ require 'httparty'
 module Offcloud
   class Client
     def add(url)
-      post("#{api_url}/cloud", url: url)
+      post("#{api_url}/cloud", body: { url: url })
+    end
+
+    def fetch
+      get("cloud/history")
     end
 
     private
 
-    def request(method, path, **params)
-      response = HTTParty.public_send(method, path, query: params.merge(key: api_key))
+    def get(path, query: {}, body: {})
+      HTTParty.get("#{api_url}/#{path}", query: query.merge(key: api_key))
+    end
 
+    def post(path, query: {}, body: {})
+      response = HTTParty.post(path, query: query.merge(key: api_key), body: body.to_json)
       puts response.request.last_uri.to_s
-
-      response
-    end
-
-    def get(path, **params)
-      request(:get, path, **params)
-    end
-
-    def post(path, **params)
-      request(:post, path, **params)
+      pp response.inspect
     end
 
     def api_key
