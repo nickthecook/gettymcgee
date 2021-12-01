@@ -2,6 +2,8 @@ dependencies:
   gem:
     - bundler
     - rerun
+  docker:
+    - deps/redis
   custom:
     - bundle
 actions:
@@ -14,6 +16,10 @@ actions:
   rails:
     command: bin/rails
     alias: r
+    load_secrets: true
+  sidekiq:
+    command: RUN_SIDEKIQ=true bundle exec sidekiq
+    alias: sq
     load_secrets: true
   test:
     command: rspec

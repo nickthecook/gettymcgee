@@ -1,5 +1,14 @@
 {
   "environment": {
-    "OFFCLOUD_API_URL": "https://offcloud.com/api"
+    "OFFCLOUD_API_URL": "https://offcloud.com/api",
+    "SIDEKIQ_CRON": {
+      "fetch_offcloud_file_data": {
+        "cron": "* * * * *",
+        "class": "DefaultWorker",
+        "args": {
+          "task": "fetch_offcloud_file_data"
+        }
+      }
+    }
   }
 }

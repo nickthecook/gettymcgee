@@ -39,6 +39,7 @@ gem 'sidekiq-cron'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -56,7 +57,6 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem "fuubar"
   gem 'capybara', '>= 3.26'
-  gem 'rspec-rails'
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
