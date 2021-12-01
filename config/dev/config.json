@@ -1,6 +1,8 @@
 {
   "environment": {
     "OFFCLOUD_API_URL": "https://offcloud.com/api",
+    "LOCAL_TV_DIR": "/mnt/quasar/Multimedia/TV",
+    "LOCAL_MOVIE_DIR": "/mnt/quasar/Multimedia/Videos",
     "SIDEKIQ_CRON": {
       "fetch_offcloud_file_data": {
         "cron": "* * * * *",
