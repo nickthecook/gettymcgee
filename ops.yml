@@ -1,18 +1,20 @@
 dependencies:
+  apt:
+    - postgresql-client
+    - libpq5
+    - libpq-dev
   gem:
     - bundler
     - rerun
   docker:
     - deps/redis
+    - deps/postgres
   custom:
     - bundle
 actions:
-  start:
-    command: echo update me
+  server:
+    command: bundle exec rails server
     description: starts the app
-  stop:
-    command: echo update me too
-    description: stops the app
   rails:
     command: bin/rails
     alias: r
@@ -20,6 +22,10 @@ actions:
   sidekiq:
     command: RUN_SIDEKIQ=true bundle exec sidekiq
     alias: sq
+    load_secrets: true
+  db-reset:
+    command: rails db:drop && rails db:create && rails db:migrate
+    alias: dbr
     load_secrets: true
   test:
     command: rspec

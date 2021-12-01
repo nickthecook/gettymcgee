@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Cloud Files</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Remote ID</th>
+      <th>Filename</th>
+      <th>Status</th>
+      <th>Directory</th>
+      <th>Remote created at</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cloud_files.each do |cloud_file| %>
+      <tr>
+        <td><%= link_to cloud_file.remote_id, cloud_file %></td>
+        <td><%= cloud_file.filename %></td>
+        <td><%= cloud_file.status %></td>
+        <td><%= cloud_file.directory %></td>
+        <td><%= cloud_file.remote_created_at %></td>
+        <td><%= link_to 'Destroy', cloud_file, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Cloud File', new_cloud_file_path %>

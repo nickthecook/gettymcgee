@@ -2,6 +2,8 @@
 
 require 'httparty'
 
+require 'offcloud/history'
+
 module Offcloud
   class Client
     def add(url)
@@ -9,7 +11,7 @@ module Offcloud
     end
 
     def fetch
-      get("cloud/history")
+      History.new(get("cloud/history").parsed_response)
     end
 
     private

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Filename:</strong>
+  <%= @cloud_file.filename %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @cloud_file.status %>
+</p>
+
+<p>
+  <strong>Original link:</strong>
+  <%= @cloud_file.original_link %>
+</p>
+
+<p>
+  <strong>Directory:</strong>
+  <%= @cloud_file.directory %>
+</p>
+
+<p>
+  <strong>Remote created at:</strong>
+  <%= @cloud_file.remote_created_at %>
+</p>
+
+<%= link_to 'Edit', edit_cloud_file_path(@cloud_file) %> |
+<%= link_to 'Back', cloud_files_path %>

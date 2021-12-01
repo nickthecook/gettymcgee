@@ -4,7 +4,14 @@ require 'offcloud/client'
 
 class OffcloudFileFetcherService
   def execute
-    puts client.fetch
+    files = client.fetch.files
+
+    files.each do |file|
+      cloud_file = CloudFile.from_object(file)
+      next if CloudFile.find_by(remote_id: cloud_file.remote_id)
+
+      cloud_file.save!
+    end
   end
 
   private
