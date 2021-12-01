@@ -3,7 +3,7 @@ class CloudFilesController < ApplicationController
 
   # GET /cloud_files or /cloud_files.json
   def index
-    @cloud_files = CloudFile.all
+    @cloud_files = CloudFile.order(remote_created_at: :desc).all
   end
 
   # GET /cloud_files/1 or /cloud_files/1.json
