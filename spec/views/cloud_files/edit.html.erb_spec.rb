@@ -4,7 +4,7 @@ RSpec.describe "cloud_files/edit", type: :view do
   before(:each) do
     @cloud_file = assign(:cloud_file, CloudFile.create!(
       filename: "MyString",
-      status: 1,
+      status: "downloaded",
       original_link: "MyString",
       directory: false
     ))

@@ -4,11 +4,11 @@
     "LOCAL_TV_DIR": "/mnt/quasar/Multimedia/TV",
     "LOCAL_MOVIE_DIR": "/mnt/quasar/Multimedia/Videos",
     "SIDEKIQ_CRON": {
-      "fetch_offcloud_file_data": {
+      "sync_offcloud_file_metadata": {
         "cron": "* * * * *",
         "class": "DefaultWorker",
         "args": {
-          "task": "fetch_offcloud_file_data"
+          "task": "sync_offcloud_file_metadata"
         }
       }
     }

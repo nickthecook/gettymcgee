@@ -5,13 +5,13 @@ RSpec.describe "cloud_files/index", type: :view do
     assign(:cloud_files, [
       CloudFile.create!(
         filename: "Filename",
-        status: 2,
+        status: "downloaded",
         original_link: "Original Link",
         directory: false
       ),
       CloudFile.create!(
         filename: "Filename",
-        status: 2,
+        status: "downloaded",
         original_link: "Original Link",
         directory: false
       )
@@ -21,8 +21,7 @@ RSpec.describe "cloud_files/index", type: :view do
   it "renders a list of cloud_files" do
     render
     assert_select "tr>td", text: "Filename".to_s, count: 2
-    assert_select "tr>td", text: 2.to_s, count: 2
-    assert_select "tr>td", text: "Original Link".to_s, count: 2
+    assert_select "tr>td", text: "downloaded", count: 2
     assert_select "tr>td", text: false.to_s, count: 2
   end
 end

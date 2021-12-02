@@ -28,7 +28,7 @@ RSpec.describe Offcloud::History do
         "createdOn" => "2021-10-10T17:58:02.878Z",
         "server" => "ca-4"
       }
-    ].to_json
+    ]
   end
 
   describe "#files" do

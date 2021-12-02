@@ -2,7 +2,7 @@
 
 require 'offcloud/client'
 
-class OffcloudFileFetcherService
+class OffcloudHistorySyncService
   def execute
     files = client.fetch.files
 

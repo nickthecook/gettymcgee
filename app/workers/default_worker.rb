@@ -12,7 +12,7 @@ class DefaultWorker
 
   private
 
-  def fetch_offcloud_file_data
-    OffcloudFileFetcherService.new.execute
+  def sync_offcloud_file_metadata
+    OffcloudHistorySyncService.new.execute
   end
 end

@@ -11,6 +11,7 @@ dependencies:
     - deps/postgres
   custom:
     - bundle
+    - yarn
 actions:
   server:
     command: bundle exec rails server
