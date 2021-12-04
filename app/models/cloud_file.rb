@@ -4,7 +4,7 @@ class CloudFile < ApplicationRecord
       self.new(
         remote_id: obj.request_id,
         filename: obj.file_name,
-        status: obj.status,
+        remote_status: obj.status,
         original_link: obj.original_link,
         directory: obj.is_directory,
         remote_created_at: obj.created_on
@@ -12,5 +12,5 @@ class CloudFile < ApplicationRecord
     end
   end
 
-  enum status: %i[downloaded]
+  enum remote_status: %i[downloaded]
 end

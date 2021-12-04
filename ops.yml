@@ -4,7 +4,7 @@ dependencies:
     - libpq5
     - libpq-dev
   gem:
-    - bundler
+    - bundler:2.2.25
     - rerun
   docker:
     - deps/redis
