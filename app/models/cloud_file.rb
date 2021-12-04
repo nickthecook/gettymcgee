@@ -1,4 +1,6 @@
 class CloudFile < ApplicationRecord
+  include AASM
+
   class << self
     def from_object(obj)
       self.new(
@@ -13,4 +15,18 @@ class CloudFile < ApplicationRecord
   end
 
   enum remote_status: %i[downloaded]
+  enum status: %i[created pulled]
+
+  aasm column: :status, enum: true do
+    state :created, initial: true
+    state :retrieved
+
+    event :mark_retrieved do
+      transitions from: :created, to: :retrieved
+    end
+
+    event :mark_not_retrieved do
+      transitions from: :retrieved, to: :created
+    end
+  end
 end

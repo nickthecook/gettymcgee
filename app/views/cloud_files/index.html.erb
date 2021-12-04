@@ -7,6 +7,7 @@
     <tr>
       <th>Remote ID</th>
       <th>Filename</th>
+      <th>Status</th>
       <th>Remote Status</th>
       <th>Directory</th>
       <th>Remote created at</th>
@@ -19,6 +20,7 @@
       <tr>
         <td><%= link_to cloud_file.remote_id, cloud_file %></td>
         <td><%= cloud_file.filename %></td>
+        <td><%= cloud_file.status %></td>
         <td><%= cloud_file.remote_status %></td>
         <td><%= cloud_file.directory %></td>
         <td><%= cloud_file.remote_created_at %></td>

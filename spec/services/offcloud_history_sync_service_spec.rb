@@ -42,7 +42,8 @@ RSpec.describe OffcloudHistorySyncService do
       expect(CloudFile.first).to have_attributes(
         remote_id: "1234",
         filename: "file1.iso",
-        status: "downloaded",
+        status: "created",
+        remote_status: "downloaded",
         original_link: "https://example.com/file1.iso.torrent",
         directory: false,
         remote_created_at: Time.parse("2021-11-10T17:58:02.878Z")
@@ -50,7 +51,8 @@ RSpec.describe OffcloudHistorySyncService do
       expect(CloudFile.second).to have_attributes(
         remote_id: "5678",
         filename: "file2.iso",
-        status: "downloaded",
+        status: "created",
+        remote_status: "downloaded",
         original_link: "https://example.com/file2.iso.torrent",
         directory: false,
         remote_created_at: Time.parse("2021-10-10T17:58:02.878Z")

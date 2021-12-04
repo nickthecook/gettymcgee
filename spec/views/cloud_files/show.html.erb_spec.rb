@@ -4,7 +4,7 @@ RSpec.describe "cloud_files/show", type: :view do
   before(:each) do
     @cloud_file = assign(:cloud_file, CloudFile.create!(
       filename: "Filename",
-      status: "downloaded",
+      remote_status: "downloaded",
       original_link: "Original Link",
       directory: false
     ))
@@ -13,6 +13,7 @@ RSpec.describe "cloud_files/show", type: :view do
   it "renders attributes in <p>" do
     render
     expect(rendered).to match(/Filename/)
+    expect(rendered).to match(/created/)
     expect(rendered).to match(/downloaded/)
     expect(rendered).to match(/Original Link/)
     expect(rendered).to match(/false/)
