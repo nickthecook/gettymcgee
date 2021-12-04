@@ -12,6 +12,7 @@ dependencies:
   custom:
     - bundle
     - yarn
+    - ln -sf "$LOCAL_STORAGE_DIR" storage
 actions:
   server:
     command: bundle exec rails server
