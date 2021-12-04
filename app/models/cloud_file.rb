@@ -19,14 +19,14 @@ class CloudFile < ApplicationRecord
 
   aasm column: :status, enum: true do
     state :created, initial: true
-    state :retrieved
+    state :pulled
 
-    event :mark_retrieved do
-      transitions from: :created, to: :retrieved
+    event :mark_pulled do
+      transitions from: :created, to: :pulled
     end
 
-    event :mark_not_retrieved do
-      transitions from: :retrieved, to: :created
+    event :mark_not_pulled do
+      transitions from: :pulled, to: :created
     end
   end
 end
