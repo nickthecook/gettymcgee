@@ -14,7 +14,24 @@ module Offcloud
       History.new(get("cloud/history").parsed_response)
     end
 
+    def explore(request_id)
+      get("cloud/explore/#{request_id}")
+    end
+
+    def download(request_id, filename)
+      store("cloud/download/#{request_id}/#{filename}", Rails.root.join("tmp", filename))
+    end
+
     private
+
+    def store(url, dest_path)
+      ::File.open(dest_path, "w") do |file|
+        file.binmode
+        HTTParty.get("#{api_url}", query: {key: api_key}, stream_body: true) do |fragment|
+          file.write(fragment)
+        end
+      end
+    end
 
     def get(path, query: {}, body: {})
       HTTParty.get("#{api_url}/#{path}", query: query.merge(key: api_key))
