@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CloudFile < ApplicationRecord
+  VIDEO_EXTENSIONS = %w[mkv mp4 avi m4v webm].freeze
+
   class << self
     def from_object(obj)
       new(
@@ -26,13 +28,14 @@ class CloudFile < ApplicationRecord
   has_many :paths
 
   enum content_type: %i[tv movie]
-  enum status: %i[downloaded downloading]
+  enum status: %i[downloaded downloading created]
 
   def update_with_object(obj)
     update!(
       filename: obj.file_name,
       status: obj.status,
-      server: obj.server
+      server: obj.server,
+      content_type: CloudFile.type_for(obj.file_name)
     )
   end
 end

@@ -14,12 +14,19 @@ module Offcloud
 
     def files(request_id)
       explore = get("cloud/explore/#{request_id}")
-      return nil if explore.parsed_response["error"] == "Bad archive"
+      return nil unless explore.ok?
 
-      resp.parsed_response
+      explore.parsed_response.reject { |file| file.ends_with?("/") }.map do |url|
+        url.split("#{request_id}/").last
+      end
+    end
+
+    def list(request_id)
+      get("cloud/list/#{request_id}")
     end
 
     def download(request_id, server, filename, dest)
+      puts "DEST: #{dest}"
       mkdirs(dest)
 
       url = "#{server_url(server)}/cloud/download/#{request_id}/#{CGI.escape(filename)}"
@@ -38,7 +45,7 @@ module Offcloud
     end
 
     def get(path, query: {})
-      HTTParty.get("#{api_url}/#{path}", query: query.merge(key: api_key))
+      HTTParty.get("#{api_url}/#{path}", query: query.merge(key: api_key), headers: { "Cache-Control" => "no-cache" })
     end
 
     def post(path, query: {}, body: {})

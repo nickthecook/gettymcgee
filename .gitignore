@@ -6,7 +6,7 @@
 
 #
 # custom
-storage
+/content
 
 # Ignore bundler config.
 /.bundle

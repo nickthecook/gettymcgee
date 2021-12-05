@@ -24,5 +24,8 @@ module Gettymcgee
     config.local_content_dir = ENV["LOCAL_STORAGE_DIR"] || Rails.root.join("content")
     config.local_tv_dir = "#{config.local_content_dir}/#{ENV.fetch("LOCAL_TV_DIR") { "tv" }}"
     config.local_movie_dir = "#{config.local_content_dir}/#{ENV.fetch("LOCAL_MOVIE_DIR") { "movies" }}"
+
+    config.logger = Logger.new($stdout)
+    config.log_level = :DEBUG
   end
 end

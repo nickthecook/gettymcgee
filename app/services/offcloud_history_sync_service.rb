@@ -5,7 +5,6 @@ class OffcloudHistorySyncService
     files = client.fetch.files
 
     files.each do |file|
-      pp file
       cloud_file = CloudFile.find_by(remote_id: file.request_id)
 
       if cloud_file

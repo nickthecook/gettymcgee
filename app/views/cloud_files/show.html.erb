@@ -25,5 +25,19 @@
   <%= @cloud_file.remote_created_at %>
 </p>
 
+<h2>Files</h2>
+<table>
+  <tr>
+    <th>File</th>
+    <th>Size</th>
+  </tr>
+  <% @cloud_file.paths.each do |path| %>
+    <tr>
+      <td><%= path.path %></td>
+      <td><%= "NIY" %></td>
+    </tr>
+  <% end %>
+</table>
+
 <%= link_to 'Edit', edit_cloud_file_path(@cloud_file) %> |
 <%= link_to 'Back', cloud_files_path %>
