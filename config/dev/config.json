@@ -5,7 +5,7 @@
     "_LOCAL_MOVIE_DIR": "Videos",
     "SIDEKIQ_CRON": {
       "sync_offcloud_file_metadata": {
-        "cron": "* * * * *",
+        "cron": "*/5 * * * *",
         "class": "DefaultWorker",
         "args": {
           "task": "sync_offcloud_file_metadata"
