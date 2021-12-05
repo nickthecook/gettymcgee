@@ -26,6 +26,6 @@ module Gettymcgee
     config.local_movie_dir = "#{config.local_content_dir}/#{ENV.fetch("LOCAL_MOVIE_DIR") { "movies" }}"
 
     config.logger = Logger.new($stdout)
-    config.log_level = :DEBUG
+    config.log_level = :INFO
   end
 end
