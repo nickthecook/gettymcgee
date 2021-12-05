@@ -3,7 +3,7 @@ Layout/IndentationStyle:
 Style/Documentation:
   Enabled: false
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.0
 Style/StringLiterals:
   Enabled: false
 Style/HashEachMethods:

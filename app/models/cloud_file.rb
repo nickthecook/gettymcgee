@@ -10,6 +10,7 @@ class CloudFile < ApplicationRecord
         original_link: obj.original_link,
         directory: obj.is_directory,
         remote_created_at: obj.created_on,
+        server: obj.server,
         content_type: type_for(obj.file_name)
       )
     end

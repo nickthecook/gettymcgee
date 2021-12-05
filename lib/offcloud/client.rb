@@ -19,18 +19,19 @@ module Offcloud
       resp.parsed_response
     end
 
-    def download(request_id, filename, dest)
-      store("cloud/download/#{request_id}/#{filename}", dest)
+    def download(request_id, server, filename, dest)
+      mkdirs(dest)
+
+      url = "#{server_url(server)}/cloud/download/#{request_id}/#{CGI.escape(filename)}"
+      store(url, dest)
     end
 
     private
 
-    def store(path, dest_path)
-      mkdirs(dest_path)
-
+    def store(url, dest_path)
       ::File.open(dest_path, "w") do |file|
         file.binmode
-        HTTParty.get("#{api_url}/#{CGI.escape(path)}", query: {key: api_key}, stream_body: true) do |fragment|
+        HTTParty.get(url, query: {key: api_key}, stream_body: true) do |fragment|
           file.write(fragment)
         end
       end
@@ -51,7 +52,15 @@ module Offcloud
     end
 
     def api_url
-      ENV["OFFCLOUD_API_URL"]
+      "https://offcloud.com/api"
+    end
+
+    def offcloud_url
+      "https://offcloud.com"
+    end
+
+    def server_url(server)
+      "https://#{server}.offcloud.com"
     end
 
     def mkdirs(path)

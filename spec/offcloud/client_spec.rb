@@ -10,7 +10,6 @@ RSpec.describe Offcloud::Client do
     before do
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with("OFFCLOUD_API_KEY").and_return("1234")
-      allow(ENV).to receive(:[]).with("OFFCLOUD_API_URL").and_return("https://example.com")
       allow(Offcloud::History).to receive(:new).and_return(history_double)
       allow(HTTParty).to receive(:get).and_return(get_response)
     end
@@ -28,7 +27,7 @@ RSpec.describe Offcloud::Client do
       end
 
       it "gets history from the server" do
-        expect(HTTParty).to receive(:get).with("https://example.com/cloud/history", query: { key: "1234" })
+        expect(HTTParty).to receive(:get).with("https://offcloud.com/api/cloud/history", query: { key: "1234" })
         result
       end
     end

@@ -8,7 +8,7 @@ class DownloadPathService
   end
 
   def execute
-    client.download(@path.cloud_file.remote_id, @path.path, path_for(@path.content_type))
+    client.download(@path.cloud_file.remote_id, @path.server, @path.path, path_for(@path.content_type))
   end
 
   private

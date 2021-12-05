@@ -26,4 +26,8 @@ class Path < ApplicationRecord
   def content_type
     cloud_file.content_type.to_sym
   end
+
+  def server
+    cloud_file.server
+  end
 end
