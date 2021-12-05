@@ -2,8 +2,6 @@
 
 require 'httparty'
 
-require 'offcloud/history'
-
 module Offcloud
   class Client
     def add(url)
@@ -14,9 +12,31 @@ module Offcloud
       History.new(get("cloud/history").parsed_response)
     end
 
+    def files(request_id)
+      explore = get("cloud/explore/#{request_id}")
+      return nil if explore.parsed_response["error"] == "Bad archive"
+
+      resp.parsed_response
+    end
+
+    def download(request_id, filename, dest)
+      store("cloud/download/#{request_id}/#{filename}", dest)
+    end
+
     private
 
-    def get(path, query: {}, body: {})
+    def store(path, dest_path)
+      mkdirs(dest_path)
+
+      ::File.open(dest_path, "w") do |file|
+        file.binmode
+        HTTParty.get("#{api_url}/#{CGI.escape(path)}", query: {key: api_key}, stream_body: true) do |fragment|
+          file.write(fragment)
+        end
+      end
+    end
+
+    def get(path, query: {})
       HTTParty.get("#{api_url}/#{path}", query: query.merge(key: api_key))
     end
 
@@ -32,6 +52,12 @@ module Offcloud
 
     def api_url
       ENV["OFFCLOUD_API_URL"]
+    end
+
+    def mkdirs(path)
+      dir = ::File.dirname(path)
+
+      FileUtils.mkdir_p(dir)
     end
   end
 end

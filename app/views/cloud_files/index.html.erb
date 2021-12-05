@@ -7,6 +7,7 @@
     <tr>
       <th>Remote ID</th>
       <th>Filename</th>
+      <th>Content type</th>
       <th>Status</th>
       <th>Remote Status</th>
       <th>Directory</th>
@@ -18,8 +19,9 @@
   <tbody>
     <% @cloud_files.each do |cloud_file| %>
       <tr>
-        <td><%= link_to cloud_file.remote_id, cloud_file %></td>
-        <td><%= cloud_file.filename %></td>
+        <td><%= cloud_file.remote_id %></td>
+        <td><%= link_to cloud_file.filename, cloud_file %></td>
+        <td><%= cloud_file.content_type %></td>
         <td><%= cloud_file.status %></td>
         <td><%= cloud_file.remote_status %></td>
         <td><%= cloud_file.directory %></td>
@@ -32,4 +34,5 @@
 
 <br>
 
-<%= link_to 'New Cloud File', new_cloud_file_path %>
+<p><%= link_to 'New Cloud File', new_cloud_file_path %><p>
+<p><%= link_to 'Sidekiq', "/sidekiq" %><p>

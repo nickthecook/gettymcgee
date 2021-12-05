@@ -2,9 +2,6 @@
 
 require 'rails_helper'
 
-require 'offcloud/client'
-require 'offcloud/history'
-
 RSpec.describe Offcloud::Client do
   describe "#fetch" do
     let(:history_double) { instance_double(Offcloud::History) }

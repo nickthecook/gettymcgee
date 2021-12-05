@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'offcloud/client'
-
 class OffcloudHistorySyncService
   def execute
     files = client.fetch.files

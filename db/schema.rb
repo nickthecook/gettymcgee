@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_04_161548) do
+ActiveRecord::Schema.define(version: 2021_12_05_144149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,17 @@ ActiveRecord::Schema.define(version: 2021_12_04_161548) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
+    t.integer "content_type"
     t.index ["remote_id"], name: "index_cloud_files_on_remote_id", unique: true
+  end
+
+  create_table "paths", force: :cascade do |t|
+    t.bigint "cloud_file_id"
+    t.string "path"
+    t.integer "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cloud_file_id"], name: "index_paths_on_cloud_file_id"
   end
 
 end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'offcloud/history'
 
 RSpec.describe Offcloud::History do
   subject { Offcloud::History.new(files) }
