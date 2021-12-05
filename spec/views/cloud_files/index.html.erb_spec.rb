@@ -5,13 +5,13 @@ RSpec.describe "cloud_files/index", type: :view do
     assign(:cloud_files, [
       CloudFile.create!(
         filename: "Filename",
-        remote_status: "downloaded",
+        status: "downloaded",
         original_link: "Original Link",
         directory: false
       ),
       CloudFile.create!(
         filename: "Filename",
-        remote_status: "downloaded",
+        status: "downloaded",
         original_link: "Original Link",
         directory: false
       )

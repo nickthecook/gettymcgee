@@ -1,12 +1,12 @@
-class CloudFile < ApplicationRecord
-  include AASM
+# frozen_string_literal: true
 
+class CloudFile < ApplicationRecord
   class << self
     def from_object(obj)
       new(
         remote_id: obj.request_id,
         filename: obj.file_name,
-        remote_status: obj.status,
+        status: obj.status,
         original_link: obj.original_link,
         directory: obj.is_directory,
         remote_created_at: obj.created_on,
@@ -16,6 +16,7 @@ class CloudFile < ApplicationRecord
     end
 
     def type_for(filename)
+      return nil unless filename
       return :tv if filename.match?(/s\d\de\d\d/i) || filename.match?(/season[ _.]?\d/i) || filename.match?(/s\d\d/i)
 
       :movie
@@ -25,19 +26,13 @@ class CloudFile < ApplicationRecord
   has_many :paths
 
   enum content_type: %i[tv movie]
-  enum remote_status: %i[downloaded]
-  enum status: %i[created pulled]
+  enum status: %i[downloaded downloading]
 
-  aasm column: :status, enum: true do
-    state :created, initial: true
-    state :pulled
-
-    event :mark_pulled do
-      transitions from: :created, to: :pulled
-    end
-
-    event :mark_not_pulled do
-      transitions from: :pulled, to: :created
-    end
+  def update_with_object(obj)
+    update!(
+      filename: obj.file_name,
+      status: obj.status,
+      server: obj.server
+    )
   end
 end

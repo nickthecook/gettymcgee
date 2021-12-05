@@ -4,7 +4,7 @@ RSpec.describe "cloud_files/show", type: :view do
   before(:each) do
     @cloud_file = assign(:cloud_file, CloudFile.create!(
       filename: "Filename",
-      remote_status: "downloaded",
+      status: "downloaded",
       original_link: "Original Link",
       directory: false
     ))

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_05_161555) do
+ActiveRecord::Schema.define(version: 2021_12_05_175856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,13 +18,12 @@ ActiveRecord::Schema.define(version: 2021_12_05_161555) do
   create_table "cloud_files", force: :cascade do |t|
     t.string "remote_id"
     t.string "filename"
-    t.integer "remote_status"
+    t.integer "status"
     t.string "original_link"
     t.boolean "directory"
     t.datetime "remote_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "status", default: 0
     t.integer "content_type"
     t.string "server"
     t.index ["remote_id"], name: "index_cloud_files_on_remote_id", unique: true

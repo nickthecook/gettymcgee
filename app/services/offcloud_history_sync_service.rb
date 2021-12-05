@@ -5,10 +5,14 @@ class OffcloudHistorySyncService
     files = client.fetch.files
 
     files.each do |file|
-      cloud_file = CloudFile.from_object(file)
-      next if CloudFile.find_by(remote_id: cloud_file.remote_id)
+      pp file
+      cloud_file = CloudFile.find_by(remote_id: file.request_id)
 
-      cloud_file.save!
+      if cloud_file
+        cloud_file.update_with_object(file)
+      else
+        CloudFile.from_object(file).save!
+      end
     end
   end
 

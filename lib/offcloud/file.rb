@@ -15,5 +15,13 @@ module Offcloud
 
       @data.keys.include?(method_name.to_sym)
     end
+
+    def respond_to_missing?
+      true
+    end
+
+    def to_h
+      @data
+    end
   end
 end

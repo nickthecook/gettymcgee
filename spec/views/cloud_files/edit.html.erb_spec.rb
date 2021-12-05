@@ -4,7 +4,7 @@ RSpec.describe "cloud_files/edit", type: :view do
   before(:each) do
     @cloud_file = assign(:cloud_file, CloudFile.create!(
       filename: "MyString",
-      remote_status: "downloaded",
+      status: "downloaded",
       original_link: "MyString",
       directory: false
     ))
@@ -15,7 +15,7 @@ RSpec.describe "cloud_files/edit", type: :view do
 
     assert_select "form[action=?][method=?]", cloud_file_path(@cloud_file), "post" do
       assert_select "input[name=?]", "cloud_file[filename]"
-      assert_select "input[name=?]", "cloud_file[remote_status]"
+      assert_select "input[name=?]", "cloud_file[status]"
       assert_select "input[name=?]", "cloud_file[original_link]"
       assert_select "input[name=?]", "cloud_file[directory]"
     end

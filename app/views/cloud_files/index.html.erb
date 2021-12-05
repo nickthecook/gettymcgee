@@ -9,7 +9,6 @@
       <th>Filename</th>
       <th>Content type</th>
       <th>Status</th>
-      <th>Remote Status</th>
       <th>Directory</th>
       <th>Remote created at</th>
       <th colspan="3"></th>
@@ -23,7 +22,6 @@
         <td><%= link_to cloud_file.filename, cloud_file %></td>
         <td><%= cloud_file.content_type %></td>
         <td><%= cloud_file.status %></td>
-        <td><%= cloud_file.remote_status %></td>
         <td><%= cloud_file.directory %></td>
         <td><%= cloud_file.remote_created_at %></td>
         <td><%= link_to 'Destroy', cloud_file, method: :delete, data: { confirm: 'Are you sure?' } %></td>
