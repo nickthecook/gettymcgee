@@ -2,8 +2,15 @@
 
 class OffcloudHistorySyncService
   def execute
-    files = client.fetch.files
+    @files = client.fetch.files
 
+    add_files
+    remove_files
+  end
+
+  private
+
+  def add_files(files)
     files.each do |file|
       cloud_file = CloudFile.find_by(remote_id: file.request_id)
 
@@ -17,7 +24,9 @@ class OffcloudHistorySyncService
     end
   end
 
-  private
+  def remove_files
+
+  end
 
   def client
     @client ||= Offcloud::Client.new
