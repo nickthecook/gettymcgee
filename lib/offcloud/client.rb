@@ -12,6 +12,10 @@ module Offcloud
       History.new(get("cloud/history").parsed_response)
     end
 
+    def status(request_id)
+      File.new(post("cloud/status", body: { requestId: request_id }).parsed_response["status"])
+    end
+
     def files(request_id)
       explore = get("cloud/explore/#{request_id}")
       return nil unless explore.ok?
@@ -44,14 +48,21 @@ module Offcloud
       end
     end
 
-    def get(path, query: {})
-      HTTParty.get("#{api_url}/#{path}", query: query.merge(key: api_key), headers: { "Cache-Control" => "no-cache" })
+    def get(path, query: {}, headers: {})
+      HTTParty.get(
+        "#{api_url}/#{path}",
+        query: query.merge(key: api_key),
+        headers: headers.merge(get_headers)
+      )
     end
 
-    def post(path, query: {}, body: {})
-      response = HTTParty.post(path, query: query.merge(key: api_key), body: body.to_json)
-      puts response.request.last_uri.to_s
-      pp response.inspect
+    def post(path, query: {}, body: {}, headers: {})
+      HTTParty.post(
+        "#{api_url}/#{path}",
+        query: query.merge(key: api_key),
+        body: body.to_json,
+        headers: headers.merge(post_headers)
+      )
     end
 
     def api_key
@@ -74,6 +85,14 @@ module Offcloud
       dir = ::File.dirname(path)
 
       FileUtils.mkdir_p(dir)
+    end
+
+    def get_headers
+      { "Cache-Control" => "no-cache" }
+    end
+
+    def post_headers
+      { "Content-Type" => "application/json" }
     end
   end
 end

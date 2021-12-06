@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+Sidekiq::Web.app_url = "/"
+
 if ENV["RUN_SIDEKIQ"]
   cron_config = ENV["SIDEKIQ_CRON"]
 
@@ -8,11 +11,11 @@ if ENV["RUN_SIDEKIQ"]
   Rails.application.reloader.to_prepare do
     Sidekiq.logger = Logger.new($stdout)
     Sidekiq.logger.level = Logger::INFO
-  end
 
-  if cron_config
-    Sidekiq::Cron::Job.destroy_all!
-    Sidekiq::Cron::Job.load_from_hash JSON.parse(cron_config)
+    if cron_config
+      Sidekiq::Cron::Job.destroy_all!
+      Sidekiq::Cron::Job.load_from_hash JSON.parse(cron_config)
+    end
   end
 
   Sidekiq.configure_server do |config|

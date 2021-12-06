@@ -35,7 +35,10 @@ class CloudFile < ApplicationRecord
       filename: obj.file_name,
       status: obj.status,
       server: obj.server,
-      content_type: CloudFile.type_for(obj.file_name)
+      content_type: CloudFile.type_for(obj.file_name),
+      directory: obj.is_directory
+      # amount: obj.amount,
+      # fileSize: obj.file_size
     )
   end
 end

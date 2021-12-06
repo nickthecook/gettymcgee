@@ -10,8 +10,10 @@ class OffcloudHistorySyncService
       if cloud_file
         cloud_file.update_with_object(file)
       else
-        CloudFile.from_object(file).save!
+        cloud_file = CloudFile.from_object(file).save!
       end
+
+      # DefaultWorker.perform_async(task: "update_status", cloud_file_id: cloud_file.id)
     end
   end
 

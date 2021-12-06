@@ -23,4 +23,8 @@ class DefaultWorker
   def download_path(**args)
     DownloadPathService.new(**args).execute
   end
+
+  def update_status(**args)
+    OffcloudStatusUpdateService.new(**args).execute
+  end
 end
