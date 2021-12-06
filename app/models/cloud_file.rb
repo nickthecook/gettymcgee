@@ -41,4 +41,8 @@ class CloudFile < ApplicationRecord
       # fileSize: obj.file_size
     )
   end
+
+  def downloaded?
+    status == "downloaded"
+  end
 end

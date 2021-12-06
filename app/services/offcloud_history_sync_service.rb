@@ -13,7 +13,7 @@ class OffcloudHistorySyncService
         cloud_file = CloudFile.from_object(file).save!
       end
 
-      # DefaultWorker.perform_async(task: "update_status", cloud_file_id: cloud_file.id)
+      DefaultWorker.perform_async(task: "update_status", cloud_file_id: cloud_file.id) unless cloud_file.downloaded?
     end
   end
 
