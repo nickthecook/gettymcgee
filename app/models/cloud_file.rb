@@ -36,13 +36,17 @@ class CloudFile < ApplicationRecord
       status: obj.status,
       server: obj.server,
       content_type: CloudFile.type_for(obj.file_name),
-      directory: obj.is_directory
-      # amount: obj.amount,
-      # fileSize: obj.file_size
+      directory: obj.is_directory,
+      remote_amount: obj.amount,
+      file_size: obj.file_size
     )
   end
 
   def downloaded?
     status == "downloaded"
+  end
+
+  def remote_percent_complete
+    (remote_amount.to_f / file_size * 100).to_i if file_size
   end
 end

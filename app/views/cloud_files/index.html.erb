@@ -7,9 +7,11 @@
     <tr>
       <th>Remote ID</th>
       <th>Filename</th>
+      <th>Size</th>
+      <th>% Complete</th>
       <th>Content type</th>
       <th>Status</th>
-      <th>Directory</th>
+      <th>Is Directory?</th>
       <th>Remote created at</th>
       <th>Files</th>
       <th colspan="3"></th>
@@ -21,6 +23,8 @@
       <tr>
         <td><%= cloud_file.remote_id %></td>
         <td><%= link_to cloud_file.filename, cloud_file %></td>
+        <td><%= number_to_human_size(cloud_file.file_size) %></td>
+        <td><%= cloud_file.remote_percent_complete %></td>
         <td><%= cloud_file.content_type %></td>
         <td><%= cloud_file.status %></td>
         <td><%= cloud_file.directory %></td>
