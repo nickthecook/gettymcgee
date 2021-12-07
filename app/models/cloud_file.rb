@@ -58,13 +58,14 @@ class CloudFile < ApplicationRecord
     end
   end
 
+  scope :downloaded_without_paths, -> { downloaded.where.missing(:paths) }
+
   def update_with_object(obj)
     attrs = map_keys(obj.to_h).slice(*attributes.symbolize_keys.keys)
     assign_attributes(attrs)
 
     self.content_type = CloudFile.type_for(obj.filename) if obj.filename
     update_status(obj.status) if obj.status
-
 
     save!
   end

@@ -29,12 +29,10 @@
 <table>
   <tr>
     <th>File</th>
-    <th>Size</th>
   </tr>
   <% @cloud_file.paths.each do |path| %>
     <tr>
-      <td><%= path.path %></td>
-      <td><%= "NIY" %></td>
+      <td><a href="<%= path.url %>"><%= path.path %></a></td>
     </tr>
   <% end %>
 </table>

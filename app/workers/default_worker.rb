@@ -27,4 +27,12 @@ class DefaultWorker
   def update_status(**args)
     OffcloudStatusUpdateService.new(**args).execute
   end
+
+  def sync_offcloud_paths(**args)
+    EnqueuePathSyncService.new(**args).execute
+  end
+
+  def sync_cloud_file_paths(**args)
+    OffcloudSyncPathsService.new(**args).execute
+  end
 end

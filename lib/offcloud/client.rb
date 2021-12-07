@@ -4,6 +4,8 @@ require 'httparty'
 
 module Offcloud
   class Client
+    class RequestError < StandardError; end
+
     def add(url)
       post("#{api_url}/cloud", body: { url: url })
     end
@@ -19,16 +21,19 @@ module Offcloud
     end
 
     def files(request_id)
-      explore = get("cloud/explore/#{request_id}")
-      return nil unless explore.ok?
+      resp = get("cloud/explore/#{request_id}")
+      raise_error(resp) if error?(resp)
 
-      explore.parsed_response.reject { |file| file.ends_with?("/") }.map do |url|
+      resp.parsed_response.reject { |file| file.ends_with?("/") }.map do |url|
         url.split("#{request_id}/").last
       end
     end
 
     def list(request_id)
-      get("cloud/list/#{request_id}")
+      resp = get("cloud/list/#{request_id}")
+      raise_error(resp) if error?(resp)
+
+      resp.parsed_response.lines
     end
 
     def download(request_id, server, filename, dest)
@@ -41,10 +46,20 @@ module Offcloud
 
     private
 
+    def raise_error(resp)
+      raise RequestError, resp.parsed_response
+    end
+
+    def error?(resp)
+      return true unless resp.ok?
+
+      resp.parsed_response.is_a?(Hash) && resp.parsed_response["error"].present?
+    end
+
     def store(url, dest_path)
       ::File.open(dest_path, "w") do |file|
         file.binmode
-        HTTParty.get(url, query: {key: api_key}, stream_body: true) do |fragment|
+        HTTParty.get(url, query: { key: api_key }, stream_body: true) do |fragment|
           file.write(fragment)
         end
       end

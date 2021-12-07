@@ -10,6 +10,13 @@
         "args": {
           "task": "sync_offcloud_file_metadata"
         }
+      },
+      "sync_offcloud_paths": {
+        "cron": "* * * * *",
+        "class": "DefaultWorker",
+        "args": {
+          "task": "sync_offcloud_paths"
+        }
       }
     }
   }
