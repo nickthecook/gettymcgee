@@ -10,8 +10,8 @@ class OffcloudHistorySyncService
 
   private
 
-  def add_files(files)
-    files.each do |file|
+  def add_files
+    @files.each do |file|
       cloud_file = CloudFile.find_by(remote_id: file.request_id)
 
       if cloud_file
@@ -25,10 +25,23 @@ class OffcloudHistorySyncService
   end
 
   def remove_files
-
+    CloudFile.not_deleted.each do |cloud_file|
+      if files_by_id[cloud_file.remote_id].nil?
+        Rails.logger.info("Marking #{cloud_file.id} deleted...")
+        cloud_file.mark_deleted!
+      else
+        Rails.logger.info("Found #{cloud_file.id} in the hash")
+      end
+    end
   end
 
   def client
     @client ||= Offcloud::Client.new
+  end
+
+  def files_by_id
+    @files_by_id ||= @files.each_with_object({}) do |file, hash|
+      hash[file.request_id] = file
+    end
   end
 end
