@@ -26,12 +26,7 @@ class OffcloudHistorySyncService
 
   def remove_files
     CloudFile.not_deleted.each do |cloud_file|
-      if files_by_id[cloud_file.remote_id].nil?
-        Rails.logger.info("Marking #{cloud_file.id} deleted...")
-        cloud_file.mark_deleted!
-      else
-        Rails.logger.info("Found #{cloud_file.id} in the hash")
-      end
+      cloud_file.mark_deleted! unless files_by_id[cloud_file.remote_id]
     end
   end
 
