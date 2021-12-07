@@ -14,13 +14,12 @@ class OffcloudHistorySyncService
     @files.each do |file|
       cloud_file = CloudFile.find_by(remote_id: file.request_id)
 
-      if cloud_file
-        cloud_file.update_with_object(file)
-      else
-        cloud_file = CloudFile.from_object(file).save!
+      unless cloud_file
+        cloud_file = CloudFile.from_object(file)
+        cloud_file.save!
       end
 
-      DefaultWorker.perform_async(task: "update_status", cloud_file_id: cloud_file.id) unless cloud_file.downloaded?
+      DefaultWorker.perform_async(task: "update_status", cloud_file_id: cloud_file.id) unless cloud_file.active?
     end
   end
 

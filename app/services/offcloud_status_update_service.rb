@@ -6,13 +6,17 @@ class OffcloudStatusUpdateService
   end
 
   def execute
-    @cloud_file.update_with_object(remote_status)
+    if remote_status
+      @cloud_file.update_with_object(remote_status)
+    elsif @cloud_file.may_mark_deleted?
+      @cloud_file.mark_deleted!
+    end
   end
 
   private
 
   def remote_status
-    client.status(@cloud_file.remote_id)
+    @remote_status ||= client.status(@cloud_file.remote_id)
   end
 
   def client

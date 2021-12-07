@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Remote ID</th>
       <th>Filename</th>
       <th>Size</th>
@@ -21,6 +22,7 @@
   <tbody>
     <% @cloud_files.each do |cloud_file| %>
       <tr>
+        <td><%= cloud_file.id %></td>
         <td><%= cloud_file.remote_id %></td>
         <td><%= link_to cloud_file.filename, cloud_file %></td>
         <td><%= number_to_human_size(cloud_file.file_size) %></td>

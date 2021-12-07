@@ -13,7 +13,9 @@ module Offcloud
     end
 
     def status(request_id)
-      File.new(post("cloud/status", body: { requestId: request_id }).parsed_response["status"])
+      resp = post("cloud/status", body: { requestId: request_id }).parsed_response["status"]
+
+      resp.present? ? File.new(resp) : nil
     end
 
     def files(request_id)

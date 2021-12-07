@@ -3,11 +3,13 @@
 module Offcloud
   class File
     def initialize(data)
-      @data = data.symbolize_keys
+      @data = data.transform_keys do |key|
+        key.underscore.to_sym
+      end
     end
 
     def method_missing(method_name, *_args, &_block)
-      @data[method_name.to_s.camelcase(:lower).to_sym]
+      @data[method_name.to_sym]
     end
 
     def respond_to?(method_name, include_private = false)

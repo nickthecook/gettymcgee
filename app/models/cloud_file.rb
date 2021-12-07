@@ -2,6 +2,11 @@
 
 class CloudFile < ApplicationRecord
   VIDEO_EXTENSIONS = %w[mkv mp4 avi m4v webm].freeze
+  ATTR_MAPPING = {
+    file_name: :filename,
+    is_directory: :directory,
+    amount: :remote_amount
+  }.freeze
 
   include AASM
 
@@ -29,6 +34,8 @@ class CloudFile < ApplicationRecord
 
   has_many :paths
 
+  validates :remote_id, presence: true
+
   enum content_type: %i[tv movie]
   enum status: %i[downloaded downloading created deleted]
 
@@ -52,18 +59,35 @@ class CloudFile < ApplicationRecord
   end
 
   def update_with_object(obj)
-    update!(
-      filename: obj.file_name,
-      server: obj.server,
-      content_type: CloudFile.type_for(obj.file_name),
-      directory: obj.is_directory,
-      remote_amount: obj.amount,
-      file_size: obj.file_size
-    )
-    public_send(:"mark_#{obj.status}!") if public_send(:"may_mark_#{obj.status}?")
+    attrs = map_keys(obj.to_h).slice(*attributes.symbolize_keys.keys)
+    assign_attributes(attrs)
+
+    self.content_type = CloudFile.type_for(obj.filename) if obj.filename
+    update_status(obj.status) if obj.status
+
+
+    save!
   end
 
   def remote_percent_complete
+    return 100 if downloaded?
+
     (remote_amount.to_f / file_size * 100).to_i if file_size
+  end
+
+  def active?
+    %i[created downloading].include?(status)
+  end
+
+  private
+
+  def map_keys(input_hash)
+    input_hash.transform_keys do |key|
+      ATTR_MAPPING.include?(key) ? ATTR_MAPPING[key] : key
+    end
+  end
+
+  def update_status(status)
+    public_send(:"mark_#{status}") if respond_to?(:"may_mark_#{status}") && public_send(:"may_mark_#{status}?")
   end
 end
