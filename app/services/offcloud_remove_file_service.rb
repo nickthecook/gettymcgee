@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-class AddLinkService
-  def initialize(link:)
-    @link = link
+class OffcloudRemoveFileService
+  def initialize(remote_id:)
+    @remote_id = remote_id
   end
 
   def execute
-    resp = client.add(@link)
-
-    CloudFile.from_object(resp).save!
+    client.remove(@remote_id)
   end
 
   private

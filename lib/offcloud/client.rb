@@ -13,6 +13,10 @@ module Offcloud
       File.new(resp.parsed_response)
     end
 
+    def remove(request_id)
+      get("cloud/remove/#{request_id }", api: false)
+    end
+
     def fetch
       History.new(get("cloud/history").parsed_response)
     end
@@ -68,9 +72,11 @@ module Offcloud
       end
     end
 
-    def get(path, query: {}, headers: {})
+    def get(path, query: {}, headers: {}, api: true)
+      url = api ? api_url : offcloud_url
+
       HTTParty.get(
-        "#{api_url}/#{path}",
+        "#{url}/#{path}",
         query: query.merge(key: api_key),
         headers: headers.merge(get_headers)
       )

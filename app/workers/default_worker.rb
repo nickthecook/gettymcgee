@@ -35,4 +35,8 @@ class DefaultWorker
   def sync_cloud_file_paths(**args)
     OffcloudSyncPathsService.new(**args).execute
   end
+
+  def remove_cloud_file(**args)
+    OffcloudRemoveFileService.new(**args).execute
+  end
 end

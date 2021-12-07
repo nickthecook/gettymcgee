@@ -13,6 +13,10 @@ class OffcloudSyncPathsService
         url: urls[count]
       )
     end
+  rescue Offcloud::Client::RequestError => e
+    raise unless e.to_s.match?(/ECONNREFUSED/)
+
+    Rails.logger.error("Connection refused while syncing paths for CloudFile #{@cloud_file.id}: #{e}")
   end
 
   private

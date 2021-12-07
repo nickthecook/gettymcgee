@@ -37,16 +37,26 @@ class CloudFile < ApplicationRecord
   validates :remote_id, presence: true
 
   enum content_type: %i[tv movie]
-  enum status: %i[downloaded downloading created deleted]
+  enum status: %i[downloaded downloading created deleted queued canceled]
 
   aasm column: :status, enum: true do
     state :created, initial: true
+    state :queued
     state :downloaded
     state :downloading
     state :deleted
+    state :canceled
+
+    event :mark_canceled do
+      transitions from: %i[created queued downloading], to: :canceled
+    end
+
+    event :mark_queued do
+      transitions from: :created, to: :queued
+    end
 
     event :mark_deleted do
-      transitions from: %i[created downloading downloaded], to: :deleted
+      transitions from: %i[created downloading downloaded queued canceled], to: :deleted
     end
 
     event :mark_downloading do

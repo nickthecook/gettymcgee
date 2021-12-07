@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CloudFilesController < ApplicationController
   before_action :set_cloud_file, only: %i[show edit update destroy]
 
@@ -6,9 +8,7 @@ class CloudFilesController < ApplicationController
     @cloud_files = CloudFile.order(remote_created_at: :desc).all
   end
 
-  # GET /cloud_files/1 or /cloud_files/1.json
-  def show
-  end
+  def show; end
 
   def add
     AddLinkService.new(link: params[:link]).execute
@@ -49,7 +49,16 @@ class CloudFilesController < ApplicationController
     end
   end
 
-  # DELETE /cloud_files/1 or /cloud_files/1.json
+  def delete
+    @cloud_file = CloudFile.find(params[:id])
+    return if @cloud_file.deleted?
+
+    @cloud_file.mark_deleted!
+    DefaultWorker.perform_async(task: "remove_cloud_file", remote_id: @cloud_file.remote_id)
+
+    redirect_to action: "index"
+  end
+
   def destroy
     @cloud_file.destroy
     respond_to do |format|
