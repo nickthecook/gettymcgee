@@ -5,7 +5,9 @@ class CloudFilesController < ApplicationController
 
   # GET /cloud_files or /cloud_files.json
   def index
-    @cloud_files = CloudFile.order(remote_created_at: :desc).all
+    @cloud_files = CloudFile.order(remote_created_at: :desc)
+
+    @cloud_files = @cloud_files.not_deleted unless params[:show_deleted]
   end
 
   def show; end

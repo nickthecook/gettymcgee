@@ -10,6 +10,12 @@
   <%= form.submit "Add" %>
 <% end %>
 
+<% if params[:show_deleted] %>
+  <%= link_to "Hide deleted", cloud_files_path %>
+<% else %>
+  <%= link_to "Show deleted", cloud_files_path(show_deleted: true) %>
+<% end %>
+
 <table>
   <thead>
     <tr>
