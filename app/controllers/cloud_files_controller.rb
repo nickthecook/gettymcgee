@@ -1,5 +1,5 @@
 class CloudFilesController < ApplicationController
-  before_action :set_cloud_file, only: %i[ show edit update destroy ]
+  before_action :set_cloud_file, only: %i[show edit update destroy]
 
   # GET /cloud_files or /cloud_files.json
   def index
@@ -10,13 +10,15 @@ class CloudFilesController < ApplicationController
   def show
   end
 
-  # GET /cloud_files/new
-  def new
-    @cloud_file = CloudFile.new
-  end
+  def add
+    AddLinkService.new(link: params[:link]).execute
 
-  # GET /cloud_files/1/edit
-  def edit
+    redirect_to action: "index"
+  rescue Offcloud::Client::RequestError => e
+    Rails.logger.error(e)
+    flash.alert = e
+
+    redirect_to action: "index"
   end
 
   # POST /cloud_files or /cloud_files.json
@@ -57,13 +59,18 @@ class CloudFilesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_cloud_file
-      @cloud_file = CloudFile.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def cloud_file_params
-      params.require(:cloud_file).permit(:filename, :status, :original_link, :directory, :remote_created_at)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_cloud_file
+    @cloud_file = CloudFile.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def cloud_file_params
+    params.require(:cloud_file).permit(:filename, :status, :original_link, :directory, :remote_created_at)
+  end
+
+  def add_params
+    params.require(:link)
+  end
 end

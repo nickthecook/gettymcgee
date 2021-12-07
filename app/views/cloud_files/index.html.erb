@@ -2,6 +2,14 @@
 
 <h1>Cloud Files</h1>
 
+<%= render "shared/header" %>
+
+<%= form_with url: :cloud_files_add do |form| %>
+  <%= form.label :link, "Add magnet or torrent link" %>
+  <%= form.text_field :link %>
+  <%= form.submit "Add" %>
+<% end %>
+
 <table>
   <thead>
     <tr>

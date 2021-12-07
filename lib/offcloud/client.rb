@@ -7,7 +7,10 @@ module Offcloud
     class RequestError < StandardError; end
 
     def add(url)
-      post("#{api_url}/cloud", body: { url: url })
+      resp = post("cloud", body: { url: url })
+      raise_error(resp) if error?(resp)
+
+      File.new(resp.parsed_response)
     end
 
     def fetch

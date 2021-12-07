@@ -16,6 +16,7 @@ actions:
   server:
     command: bundle exec rails server
     description: starts the app
+    load_secrets: true
   rails:
     command: bin/rails
     alias: r

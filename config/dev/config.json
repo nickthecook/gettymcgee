@@ -12,7 +12,7 @@
         }
       },
       "sync_offcloud_paths": {
-        "cron": "* * * * *",
+        "cron": "*/5 * * * *",
         "class": "DefaultWorker",
         "args": {
           "task": "sync_offcloud_paths"
