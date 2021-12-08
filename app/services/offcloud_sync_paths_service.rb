@@ -6,9 +6,13 @@ class OffcloudSyncPathsService
   end
 
   def execute
-    return create_paths if paths.any?
+    if paths.any?
+      create_default_path
+    else
+      create_paths
+    end
 
-    create_default_path
+    DefaultWorker.perform_async(task: "enqueue_downloads", cloud_file_id: @cloud_file.id)
   end
 
   private
