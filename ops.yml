@@ -22,7 +22,7 @@ actions:
     alias: r
     load_secrets: true
   sidekiq:
-    command: RUN_SIDEKIQ=true bundle exec sidekiq
+    command: RUN_SIDEKIQ=true bundle exec sidekiq -c 5
     alias: sq
     load_secrets: true
   db-reset:

@@ -26,7 +26,7 @@
 </p>
 
 <p>
-  <strong>Progress</strong>
+  <strong>Remote Progress</strong>
   <%= @cloud_file.remote_percent_complete %>%
 </p>
 
@@ -36,13 +36,18 @@
   <tr>
     <th>ID</th>
     <th>File</th>
+    <th>Status</th>
+    <th>Downloaded</th>
     <th></th>
   </tr>
-  <% @cloud_file.paths.each do |path| %>
+  <% @cloud_file.paths.order(:id).each do |path| %>
     <tr>
       <td><%= path.id %></td>
       <td><a href="<%= path.url %>"><%= path.path %></a></td>
-      <td><%= button_to 'Trigger download', download_path_path(path), method: :post %>
+      <td><%= path.status %></td>
+      <td><%= number_to_human_size(path.amount) %> / <%= number_to_human_size(path.size) %> (<%= path.percent_complete %>%)</td>
+      <td><%= button_to 'Trigger download', download_path_path(path), disabled: !path.may_start_download? %></td>
+      <td><%= button_to 'Cancel download', cancel_download_path_path(path), disabled: !path.may_cancel? %></td>
     </tr>
   <% end %>
 </table>

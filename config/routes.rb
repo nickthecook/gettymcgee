@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   delete "/cloud_files/delete/:id", to: "cloud_files#delete", as: "cloud_files_delete"
   post "/cloud_files/sync/:id", to: "cloud_files#sync", as: "sync_cloud_files"
   post "/paths/download/:id", to: "paths#download", as: "download_path"
+  post "/paths/cancel_download/:id", to: "paths#cancel_download", as: "cancel_download_path"
 
   root to: "cloud_files#index"
 

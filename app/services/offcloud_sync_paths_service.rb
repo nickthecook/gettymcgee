@@ -14,10 +14,13 @@ class OffcloudSyncPathsService
   private
 
   def create_paths
-    paths.each do |path|
+    paths.count.times do |count|
+      path = paths[count]
+      size = sizes[count]
+
       path_only = CGI.unescape(path.rpartition(/\/\d+\//).last)
 
-      Path.find_or_create_by!(cloud_file: @cloud_file, path: path_only, url: path)
+      Path.find_or_create_by!(cloud_file: @cloud_file, path: path_only, url: path, size: size)
     end
   rescue Offcloud::Client::RequestError => e
     raise unless e.to_s.match?(/ECONNREFUSED/)
@@ -29,12 +32,19 @@ class OffcloudSyncPathsService
     Path.find_or_create_by!(
       cloud_file: @cloud_file,
       path: @cloud_file.filename,
-      url: default_url
+      url: default_url,
+      size: @cloud_file.file_size
     )
   end
 
   def paths
     @paths ||= request(:files, @cloud_file.remote_id)
+  end
+
+  def sizes
+    paths.map do |path|
+      HTTParty.head(path).content_length
+    end
   end
 
   def request(method, request_id)

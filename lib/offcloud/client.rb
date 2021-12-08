@@ -40,11 +40,10 @@ module Offcloud
       urlencode_filenames(resp.parsed_response.reject { |file| file.ends_with?("/") })
     end
 
-    def download(url, dest)
-      puts "DEST: #{dest}"
+    def download(url, dest, &block)
       mkdirs(dest)
 
-      store(url, dest)
+      store(url, dest, &block)
     end
 
     private
@@ -71,8 +70,11 @@ module Offcloud
     def store(url, dest_path)
       ::File.open(dest_path, "w") do |file|
         file.binmode
+        amount_downloaded = 0
         HTTParty.get(url, query: { key: api_key }, stream_body: true) do |fragment|
           file.write(fragment)
+          amount_downloaded += fragment.size
+          yield(amount_downloaded) if block_given?
         end
       end
     end

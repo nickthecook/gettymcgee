@@ -64,14 +64,20 @@ class PathsController < ApplicationController
     redirect_to @path.cloud_file
   end
 
+  def cancel_download
+    @path = Path.find(params[:id])
+
+    @path.cancel! if @path.may_cancel?
+
+    redirect_to @path.cloud_file
+  end
+
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_path
     @path = Path.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def path_params
     params.fetch(:path, {})
   end
