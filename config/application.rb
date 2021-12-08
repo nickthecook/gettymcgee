@@ -27,5 +27,9 @@ module Gettymcgee
 
     config.logger = Logger.new($stdout)
     config.log_level = :INFO
+
+    config.hosts << "xenon"
+    config.hosts << "shard"
+    config.hosts << "rook"
   end
 end
