@@ -78,6 +78,24 @@ class CloudFilesController < ApplicationController
     redirect_to action: "show"
   end
 
+  def cancel_downloads
+    @cloud_file = CloudFile.find(params[:id])
+
+    @cloud_file.paths.each do |path|
+      path.cancel! if path.may_cancel?
+    end
+
+    redirect_to action: "show"
+  end
+
+  def enqueue_downloads
+    @cloud_file = CloudFile.find(params[:id])
+
+    DefaultWorker.perform_async(task: "enqueue_downloads", cloud_file_id: @cloud_file.id)
+
+    redirect_to action: "show"
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

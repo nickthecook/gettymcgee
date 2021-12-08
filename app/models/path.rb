@@ -51,6 +51,10 @@ class Path < ApplicationRecord
   end
 
   def may_start_download?
-    created? || canceled? || enqueued?
+    created? || enqueued?
+  end
+
+  def may_enqueue_download?
+    created? || canceled?
   end
 end

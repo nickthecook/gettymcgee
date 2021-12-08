@@ -10,11 +10,10 @@ class EnqueueDownloadsService
   def execute
     @cloud_file.paths.each do |path|
       next if skip?(path.path)
-      next if path.enqueued?
-      next unless path.may_start_download?
+      next unless path.may_enqueue_download?
 
-      DownloadWorker.perform_async(task: "download_path", path_id: path.id)
       path.mark_enqueued!
+      DownloadWorker.perform_async(task: "download_path", path_id: path.id)
     end
   end
 

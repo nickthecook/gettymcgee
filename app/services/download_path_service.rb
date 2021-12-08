@@ -10,6 +10,11 @@ class DownloadPathService
   end
 
   def execute
+    if @path.canceled?
+      Rails.logger.info("Canceled download of Path #{@path.id}.")
+      return
+    end
+
     raise BadStatusError, "Path #{@path.id} is in state #{@path.status}; not downloading" unless @path.may_start_download?
 
     if dest_dir.nil?
