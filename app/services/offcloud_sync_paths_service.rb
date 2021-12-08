@@ -6,12 +6,18 @@ class OffcloudSyncPathsService
   end
 
   def execute
-    paths.count.times do |count|
-      Path.create!(
-        cloud_file: @cloud_file,
-        path: paths[count],
-        url: urls[count]
-      )
+    return create_paths if paths.any?
+
+    create_default_path
+  end
+
+  private
+
+  def create_paths
+    paths.each do |path|
+      path_only = CGI.unescape(path.rpartition(/\/\d+\//).last)
+
+      Path.find_or_create_by!(cloud_file: @cloud_file, path: path_only, url: path)
     end
   rescue Offcloud::Client::RequestError => e
     raise unless e.to_s.match?(/ECONNREFUSED/)
@@ -19,22 +25,33 @@ class OffcloudSyncPathsService
     Rails.logger.error("Connection refused while syncing paths for CloudFile #{@cloud_file.id}: #{e}")
   end
 
-  private
+  def create_default_path
+    Path.find_or_create_by!(
+      cloud_file: @cloud_file,
+      path: @cloud_file.filename,
+      url: default_url
+    )
+  end
 
   def paths
     @paths ||= request(:files, @cloud_file.remote_id)
   end
 
-  def urls
-    @urls ||= request(:list, @cloud_file.remote_id)
-  end
-
   def request(method, request_id)
     client.public_send(method, request_id)
   rescue Offcloud::Client::RequestError => e
-    raise unless e.to_s.match?(/Bad archive"/)
+    return [] if e.to_s.match?(/Bad archive"/)
+    return [] if e.to_s.match?(/ECONNREFUSED/)
 
-    []
+    raise
+  end
+
+  def default_url
+    Offcloud::Client.url_for(
+      @cloud_file.server,
+      @cloud_file.remote_id,
+      @cloud_file.filename
+    )
   end
 
   def client

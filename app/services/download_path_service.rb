@@ -10,11 +10,11 @@ class DownloadPathService
   def execute
     dest_dir = path_for(@path.content_type)
     if dest_dir.nil?
-      Rails.logger.info("Unable to determine content type for Path #{@path.id}; skipping.")
+      Rails.logger.info("No content type for Path #{@path.id}; skipping.")
       return
     end
 
-    client.download(@path.cloud_file.remote_id, @path.server, @path.path, dest_dir)
+    client.download(@path.url, "#{dest_dir}/#{@path.path}")
   end
 
   private
@@ -22,7 +22,10 @@ class DownloadPathService
   def path_for(content_type)
     return nil unless content_type
 
-    "#{dir_for(content_type)}/#{@path.cloud_file.filename}/#{@path.path}"
+    dir = dir_for(content_type)
+    dir += "/#{@path.cloud_file.filename}" if content_type != :tv
+
+    dir
   end
 
   def dir_for(content_type)

@@ -69,6 +69,15 @@ class CloudFilesController < ApplicationController
     end
   end
 
+  def sync
+    @cloud_file = CloudFile.find(params[:id])
+
+    DefaultWorker.perform_async(task: "sync_cloud_file_paths", cloud_file_id: @cloud_file.id) if @cloud_file.downloaded?
+    DefaultWorker.perform_async(task: "update_status", cloud_file_id: @cloud_file.id)
+
+    redirect_to action: "show"
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

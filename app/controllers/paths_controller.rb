@@ -56,14 +56,23 @@ class PathsController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_path
-      @path = Path.find(params[:id])
-    end
+  def download
+    @path = Path.find(params[:id])
 
-    # Only allow a list of trusted parameters through.
-    def path_params
-      params.fetch(:path, {})
-    end
+    DefaultWorker.perform_async(task: "download_path", path_id: @path.id)
+
+    redirect_to @path.cloud_file
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_path
+    @path = Path.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def path_params
+    params.fetch(:path, {})
+  end
 end

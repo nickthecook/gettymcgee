@@ -6,6 +6,12 @@ module Offcloud
   class Client
     class RequestError < StandardError; end
 
+    class << self
+      def url_for(server, request_id, filename)
+        "https://#{server}.offcloud.com/cloud/download/#{request_id}/#{filename}"
+      end
+    end
+
     def add(url)
       resp = post("cloud", body: { url: url })
       raise_error(resp) if error?(resp)
@@ -31,27 +37,26 @@ module Offcloud
       resp = get("cloud/explore/#{request_id}")
       raise_error(resp) if error?(resp)
 
-      resp.parsed_response.reject { |file| file.ends_with?("/") }.map do |url|
-        url.split("#{request_id}/").last
-      end
+      urlencode_filenames(resp.parsed_response.reject { |file| file.ends_with?("/") })
     end
 
-    def list(request_id)
-      resp = get("cloud/list/#{request_id}")
-      raise_error(resp) if error?(resp)
-
-      resp.parsed_response.lines
-    end
-
-    def download(request_id, server, filename, dest)
+    def download(url, dest)
       puts "DEST: #{dest}"
       mkdirs(dest)
 
-      url = "#{server_url(server)}/cloud/download/#{request_id}/#{CGI.escape(filename)}"
       store(url, dest)
     end
 
     private
+
+    def urlencode_filenames(urls)
+      urls.map do |url|
+        parts = url.rpartition(/\/\d+\//)
+        parts[-1] = CGI.escape(parts[-1])
+
+        parts.join
+      end
+    end
 
     def raise_error(resp)
       raise RequestError, resp.parsed_response

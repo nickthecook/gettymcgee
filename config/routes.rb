@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :cloud_files
   post "/cloud_files/add", to: "cloud_files#add"
   delete "/cloud_files/delete/:id", to: "cloud_files#delete", as: "cloud_files_delete"
+  post "/cloud_files/sync/:id", to: "cloud_files#sync", as: "sync_cloud_files"
+  post "/paths/download/:id", to: "paths#download", as: "download_path"
 
   root to: "cloud_files#index"
 

@@ -25,14 +25,24 @@
   <%= @cloud_file.remote_created_at %>
 </p>
 
+<p>
+  <strong>Progress</strong>
+  <%= @cloud_file.remote_percent_complete %>%
+</p>
+
+<%= button_to 'Sync', sync_cloud_files_path(@cloud_file), method: :post %>
 <h2>Files</h2>
 <table>
   <tr>
+    <th>ID</th>
     <th>File</th>
+    <th></th>
   </tr>
   <% @cloud_file.paths.each do |path| %>
     <tr>
+      <td><%= path.id %></td>
       <td><a href="<%= path.url %>"><%= path.path %></a></td>
+      <td><%= button_to 'Trigger download', download_path_path(path), method: :post %>
     </tr>
   <% end %>
 </table>
