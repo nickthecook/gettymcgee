@@ -8,7 +8,7 @@ class EnqueueDownloadsService
   def execute
     paths.each do |path|
       path_obj = Path.find_or_create_by!(cloud_file: @cloud_file, path: path)
-      DefaultWorker.perform_async(task: "download_path", path_id: path_obj.id)
+      DownloadWorker.perform_async(task: "download_path", path_id: path_obj.id)
     end
   end
 

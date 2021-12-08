@@ -21,9 +21,13 @@ actions:
     command: bin/rails
     alias: r
     load_secrets: true
-  sidekiq:
-    command: RUN_SIDEKIQ=true bundle exec sidekiq -c 5
+  sidekiq-default:
+    command: RUN_SIDEKIQ=true bundle exec sidekiq -c 5 -q default,5
     alias: sq
+    load_secrets: true
+  sidekiq-downloads:
+    command: RUN_SIDEKIQ=true bundle exec sidekiq -c 1 -q download,1
+    alias: sqdl
     load_secrets: true
   db-reset:
     command: rails db:drop && rails db:create && rails db:migrate

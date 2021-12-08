@@ -59,7 +59,7 @@ class PathsController < ApplicationController
   def download
     @path = Path.find(params[:id])
 
-    DefaultWorker.perform_async(task: "download_path", path_id: @path.id)
+    DownloadWorker.perform_async(task: "download_path", path_id: @path.id)
 
     redirect_to @path.cloud_file
   end
