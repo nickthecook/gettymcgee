@@ -5,9 +5,10 @@ class Path < ApplicationRecord
 
   belongs_to :cloud_file
 
-  enum status: %i[created downloading downloaded failed canceled]
+  enum status: %i[created downloading downloaded failed canceled enqueued]
   aasm column: :status, enum: true do
     state :created, intiial: true
+    state :enqueued
     state :downloading
     state :downloaded
     state :errored
@@ -15,11 +16,11 @@ class Path < ApplicationRecord
     state :canceled
 
     event :mark_downloading do
-      transitions from: %i[created canceled failed], to: :downloading
+      transitions from: %i[created canceled failed enqueued], to: :downloading
     end
 
     event :mark_downloaded do
-      transitions from: %i[created failed], to: :downloaded
+      transitions from: %i[downloading failed], to: :downloaded
     end
 
     event :fail do
@@ -27,7 +28,11 @@ class Path < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: :downloading, to: :canceled
+      transitions from: %i[downloading enqueued], to: :canceled
+    end
+
+    event :mark_enqueued do
+      transitions from: %i[created canceled], to: :enqueued
     end
   end
 
@@ -46,6 +51,6 @@ class Path < ApplicationRecord
   end
 
   def may_start_download?
-    created? || canceled?
+    created? || canceled? || enqueued?
   end
 end

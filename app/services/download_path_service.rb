@@ -10,7 +10,7 @@ class DownloadPathService
   end
 
   def execute
-    raise BadStatusError, "Path #{@path.id} is in state #{@path.status}, not :created" unless @path.may_start_download?
+    raise BadStatusError, "Path #{@path.id} is in state #{@path.status}; not downloading" unless @path.may_start_download?
 
     if dest_dir.nil?
       Rails.logger.info("No content type for Path #{@path.id}; skipping.")

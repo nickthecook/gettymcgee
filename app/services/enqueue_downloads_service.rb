@@ -1,24 +1,26 @@
 # frozen_string_literal: true
 
 class EnqueueDownloadsService
+  SKIP_EXTENSTIONS = %w[txt aria2].freeze
+
   def initialize(cloud_file_id:)
     @cloud_file = CloudFile.find(cloud_file_id)
   end
 
   def execute
-    paths.each do |path|
-      path_obj = Path.find_or_create_by!(cloud_file: @cloud_file, path: path)
-      DownloadWorker.perform_async(task: "download_path", path_id: path_obj.id)
+    @cloud_file.paths.each do |path|
+      next if skip?(path.path)
+      next if path.enqueued?
+      next unless path.may_start_download?
+
+      DownloadWorker.perform_async(task: "download_path", path_id: path.id)
+      path.mark_enqueued!
     end
   end
 
   private
 
-  def paths
-    @paths ||= client.files(@cloud_file.remote_id) || [@cloud_file.filename]
-  end
-
-  def client
-    @client ||= Offcloud::Client.new
+  def skip?(path)
+    SKIP_EXTENSTIONS.any? { |ext| path.match?(/\.#{ext}$/i) }
   end
 end
