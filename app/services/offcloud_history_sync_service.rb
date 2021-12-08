@@ -19,7 +19,7 @@ class OffcloudHistorySyncService
         cloud_file.save!
       end
 
-      DefaultWorker.perform_async(task: "update_status", cloud_file_id: cloud_file.id) if cloud_file.active?
+      DefaultWorker.perform_async(task: "update_status", cloud_file_id: cloud_file.id) unless cloud_file.deleted?
     end
   end
 
