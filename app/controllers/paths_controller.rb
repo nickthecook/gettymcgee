@@ -59,7 +59,10 @@ class PathsController < ApplicationController
   def download
     @path = Path.find(params[:id])
 
-    DownloadWorker.perform_async(task: "download_path", path_id: @path.id)
+    if @path.may_mark_enqueued?
+      @path.mark_enqueued!
+      DownloadWorker.perform_async(task: "download_path", path_id: @path.id)
+    end
 
     redirect_to @path.cloud_file
   end
