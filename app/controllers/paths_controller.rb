@@ -8,15 +8,12 @@ class PathsController < ApplicationController
 
   # GET /paths/1 or /paths/1.json
   def show
+    @paths = Path.all
   end
 
   # GET /paths/new
   def new
     @path = Path.new
-  end
-
-  # GET /paths/1/edit
-  def edit
   end
 
   # POST /paths or /paths.json
@@ -64,7 +61,7 @@ class PathsController < ApplicationController
       DownloadWorker.perform_async(task: "download_path", path_id: @path.id)
     end
 
-    redirect_to @path.cloud_file
+    redirect_to request.referer
   end
 
   def cancel_download
@@ -72,7 +69,7 @@ class PathsController < ApplicationController
 
     @path.cancel! if @path.may_cancel?
 
-    redirect_to @path.cloud_file
+    redirect_to request.referer
   end
 
   private

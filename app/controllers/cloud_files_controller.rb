@@ -10,7 +10,10 @@ class CloudFilesController < ApplicationController
     @cloud_files = @cloud_files.not_deleted unless params[:show_deleted]
   end
 
-  def show; end
+  def show
+    @cloud_file = CloudFile.find(params[:id])
+    @paths = @cloud_file.paths
+  end
 
   def add
     AddLinkService.new(link: params[:link]).execute

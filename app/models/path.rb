@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Path < ApplicationRecord
+  SKIP_EXTENSTIONS = %w[txt aria2].freeze
+
   include AASM
 
   belongs_to :cloud_file
@@ -38,6 +40,14 @@ class Path < ApplicationRecord
 
   def content_type
     cloud_file.content_type&.to_sym
+  end
+
+  def skip?
+    SKIP_EXTENSTIONS.any? { |ext| path.match?(/\.#{ext}$/i) }
+  end
+
+  def downloadable?
+    !skip?
   end
 
   def server

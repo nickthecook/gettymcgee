@@ -80,6 +80,16 @@ class CloudFile < ApplicationRecord
     save!
   end
 
+  def total_downloadable_size
+    downloadable_paths.map(&:size).sum
+  end
+
+  def percent_complete
+    return 0 if total_downloadable_size.zero?
+
+    (total_downloaded_size.to_f / total_downloadable_size * 100).to_i
+  end
+
   def remote_percent_complete
     return 100 if downloaded?
 
@@ -91,6 +101,14 @@ class CloudFile < ApplicationRecord
   end
 
   private
+
+  def downloadable_paths
+    @downloadable_paths ||= paths.select(&:downloadable?)
+  end
+
+  def total_downloaded_size
+    downloadable_paths.map(&:amount).sum
+  end
 
   def map_keys(input_hash)
     input_hash.transform_keys do |key|

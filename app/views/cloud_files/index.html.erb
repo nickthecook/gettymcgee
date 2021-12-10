@@ -23,7 +23,8 @@
       <th>Remote ID</th>
       <th>Filename</th>
       <th>Size</th>
-      <th>% Complete</th>
+      <th>Complete</th>
+      <th>Remote Complete</th>
       <th>Content type</th>
       <th>Status</th>
       <th>Is Directory?</th>
@@ -39,8 +40,9 @@
         <td><%= cloud_file.id %></td>
         <td><%= cloud_file.remote_id %></td>
         <td><%= link_to cloud_file.filename, cloud_file %></td>
-        <td><%= number_to_human_size(cloud_file.file_size) %></td>
-        <td><%= cloud_file.remote_percent_complete %></td>
+        <td><%= number_to_human_size(cloud_file.total_downloadable_size) %></td>
+        <td><%= cloud_file.percent_complete %>%</td>
+        <td><%= cloud_file.remote_percent_complete %>%</td>
         <td><%= cloud_file.content_type %></td>
         <td><%= cloud_file.status %></td>
         <td><%= cloud_file.directory %></td>
@@ -54,5 +56,6 @@
 
 <br>
 
+<p><%= link_to 'All Paths', paths_path %><p>
 <p><%= link_to 'New Cloud File', new_cloud_file_path %><p>
 <p><%= link_to 'Sidekiq', "/sidekiq" %><p>
