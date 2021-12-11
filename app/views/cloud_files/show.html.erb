@@ -1,36 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Filename:</strong>
-  <%= @cloud_file.filename %>
-</p>
+<div class="container-fluid">
+  <h3><%= @cloud_file.filename %></h3>
 
-<p>
-  <strong>Remote Status:</strong>
-  <%= @cloud_file.status %>
-</p>
+  <%= render "shared/cloud_file"%>
 
-<p>
-  <strong>Original link:</strong>
-  <%= @cloud_file.original_link %>
-</p>
+  <%= button_to 'Sync', sync_cloud_files_path(@cloud_file), method: :post %>
 
-<p>
-  <strong>Directory:</strong>
-  <%= @cloud_file.directory %>
-</p>
-
-<p>
-  <strong>Remote created at:</strong>
-  <%= @cloud_file.remote_created_at %>
-</p>
-
-<p>
-  <strong>Remote Progress</strong>
-  <%= @cloud_file.remote_percent_complete %>%
-</p>
-
-<%= button_to 'Sync', sync_cloud_files_path(@cloud_file), method: :post %>
-<%= render "shared/path_list" %>
-<%= link_to 'Edit', edit_cloud_file_path(@cloud_file) %> |
-<%= link_to 'Back', cloud_files_path %>
+  <%= render "shared/path_list" %>
+  <%= link_to 'Edit', edit_cloud_file_path(@cloud_file) %> |
+  <%= link_to 'Back', cloud_files_path %>
+</div>

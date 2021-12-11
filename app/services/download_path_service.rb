@@ -15,7 +15,7 @@ class DownloadPathService
       return
     end
 
-    raise BadStatusError, "Path #{@path.id} is in state #{@path.status}; not downloading" unless @path.may_start_download?
+    raise BadStatusError, "Path #{@path.id} is in state #{@path.status}; not downloading" unless @path.may_mark_downloading?
 
     if dest_dir.nil?
       Rails.logger.info("No content type for Path #{@path.id}; skipping.")
@@ -30,6 +30,7 @@ class DownloadPathService
   def perform_download
     @path.mark_downloading!
 
+    Rails.logger.info("Downloading Path #{@path.id} to '#{dest_dir}/#{@path.path}'...")
     client.download(@path.url, "#{dest_dir}/#{@path.path}") do |amount|
       raise CanceledError, "Download canceled" if @path.reload.canceled?
 

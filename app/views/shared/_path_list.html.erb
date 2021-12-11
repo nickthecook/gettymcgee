@@ -1,13 +1,16 @@
-<h2>Files</h2>
-<table>
+<table class="table table-striped">
   <tr>
     <th>ID</th>
     <th>File</th>
     <th>Status</th>
     <th>Downloaded</th>
     <% if @cloud_file %>
-      <th><%= button_to 'Enqueue all', enqueue_cloud_file_downloads_path(@cloud_file), disabled: !@cloud_file.paths.any? { |path| path.may_enqueue_download? } %></th>
-      <th><%= button_to 'Cancel all', cancel_cloud_file_downloads_path(@cloud_file), disabled: !@cloud_file.paths.any? { |path| path.may_cancel? } %></th>
+      <th>
+        <%= button_to 'Enqueue all', enqueue_cloud_file_downloads_path(@cloud_file), disabled: !@cloud_file.paths.any? { |path| path.may_mark_enqueued? } %>
+        <%= button_to 'Cancel all', cancel_cloud_file_downloads_path(@cloud_file), disabled: !@cloud_file.paths.any? { |path| path.may_cancel? } %>
+      </th>
+    <% else%>
+        <th>Actions</th>
     <% end %>
   </tr>
   <% @paths.order(:id).each do |path| %>
@@ -16,8 +19,10 @@
       <td><a href="<%= path.url %>"><%= path.path %></a></td>
       <td><%= path.status %></td>
       <td><%= number_to_human_size(path.amount) %> / <%= number_to_human_size(path.size) %> (<%= path.percent_complete %>%)</td>
-      <td><%= button_to 'Enqueue download', download_path_path(path), disabled: !path.may_enqueue_download? %></td>
-      <td><%= button_to 'Cancel download', cancel_download_path_path(path), disabled: !path.may_cancel? %></td>
+      <td>
+        <%= button_to 'Enqueue download', download_path_path(path), disabled: !path.may_mark_enqueued? %>
+        <%= button_to 'Cancel download', cancel_download_path_path(path), disabled: !path.may_cancel? %>
+      </td>
     </tr>
   <% end %>
 </table>

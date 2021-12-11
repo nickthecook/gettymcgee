@@ -34,7 +34,7 @@ class Path < ApplicationRecord
     end
 
     event :mark_enqueued do
-      transitions from: %i[created canceled], to: :enqueued
+      transitions from: %i[created canceled downloaded], to: :enqueued
     end
   end
 
@@ -58,13 +58,5 @@ class Path < ApplicationRecord
     return 100 if downloaded?
 
     (amount.to_f / size * 100).to_i if size
-  end
-
-  def may_start_download?
-    created? || enqueued?
-  end
-
-  def may_enqueue_download?
-    created? || canceled?
   end
 end

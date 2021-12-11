@@ -51,10 +51,6 @@ class CloudFile < ApplicationRecord
       transitions from: %i[created queued downloading], to: :canceled
     end
 
-    event :mark_queued do
-      transitions from: :created, to: :queued
-    end
-
     event :mark_deleted do
       transitions from: %i[created downloading downloaded queued canceled], to: :deleted
     end

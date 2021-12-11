@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body bg-light">
+        <h5 class="card-title">Remote</h5>
+        <h6 class="card-subtitle mb-2 text-muted"><%= @cloud_file.remote_percent_complete %>% downloaded</h6>
+
+        <table class="table table-bordered table-striped">
+          <tr>
+            <td>Is directory?</td>
+            <td><%= @cloud_file.directory %></td>
+          </tr>
+          <tr>
+            <td>Remote created at</td>
+            <td><%= time_ago_in_words(@cloud_file.remote_created_at) %> ago</td>
+          </tr>
+          <tr>
+            <td>Original link</td>
+            <td>(add copy button)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <div class="card-body bg-light">
+        <h5 class="card-title">Local status</h5>
+        <h6 class="card-subtitle mb-2 text-muted"><%= @cloud_file.percent_complete %>% downloaded</h6>
+
+        <table class="table table-bordered table-striped">
+          <tr>
+            <td>Size</td>
+            <td><%= number_to_human_size(@cloud_file.total_downloadable_size) %></td>
+          </tr>
+          <tr>
+            <td>Paths</td>
+            <td><%= @cloud_file.paths.count %></td>
+          </tr>
+          <tr>
+            <td>Content type</td>
+            <td><%= @cloud_file.content_type %></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+  </div>
+</div>
