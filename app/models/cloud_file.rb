@@ -81,7 +81,7 @@ class CloudFile < ApplicationRecord
   end
 
   def total_downloadable_size
-    downloadable_paths.map(&:size).sum
+    downloadable_paths.map(&:size).compact.sum
   end
 
   def percent_complete

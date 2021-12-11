@@ -4,58 +4,65 @@
 
 <%= render "shared/header" %>
 
-<%= form_with url: :cloud_files_add do |form| %>
-  <%= form.label :link, "Add magnet or torrent link" %>
-  <%= form.text_field :link %>
-  <%= form.submit "Add" %>
-<% end %>
+<div class="card bg-light p-3">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <%= form_with url: :cloud_files_add do |form| %>
+          <%= form.label :link, "Add magnet or torrent link" %>
+          <%= form.text_field :link %>
+          <%= form.submit "Add" %>
+        <% end %>
+      </div>
 
-<% if params[:show_deleted] %>
-  <%= link_to "Hide deleted", cloud_files_path %>
-<% else %>
-  <%= link_to "Show deleted", cloud_files_path(show_deleted: true) %>
-<% end %>
+      <div class="col">
+        <% if params[:show_deleted] %>
+          <%= link_to "Hide deleted", cloud_files_path, class: "text-secondary" %>
+        <% else %>
+          <%= link_to "Show deleted", cloud_files_path(show_deleted: true), class: "text-secondary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Remote ID</th>
-      <th>Filename</th>
-      <th>Size</th>
-      <th>Complete</th>
-      <th>Remote Complete</th>
-      <th>Content type</th>
-      <th>Status</th>
-      <th>Is Directory?</th>
-      <th>Remote created</th>
-      <th>Files</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @cloud_files.each do |cloud_file| %>
-      <tr>
-        <td><%= cloud_file.id %></td>
-        <td><%= cloud_file.remote_id %></td>
-        <td><%= link_to cloud_file.filename, cloud_file %></td>
-        <td><%= number_to_human_size(cloud_file.total_downloadable_size) %></td>
-        <td><%= cloud_file.percent_complete %>%</td>
-        <td><%= cloud_file.remote_percent_complete %>%</td>
-        <td><%= cloud_file.content_type %></td>
-        <td><%= cloud_file.status %></td>
-        <td><%= cloud_file.directory %></td>
-        <td><%= time_ago_in_words(cloud_file.remote_created_at) %> ago</td>
-        <td><%= cloud_file.paths.count %></td>
-        <td><%= link_to 'Delete', cloud_files_delete_path(cloud_file), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+<div class="p-3">
+  <table class="table">
+    <thead>
+      <tr class="table-secondary">
+        <th scope="col">ID</th>
+        <th scope="col">Remote ID</th>
+        <th scope="col">Filename</th>
+        <th scope="col">Size</th>
+        <th scope="col">Complete</th>
+        <th scope="col">Remote Complete</th>
+        <th scope="col">Content type</th>
+        <th scope="col">Status</th>
+        <th scope="col">Is Directory?</th>
+        <th scope="col">Remote created</th>
+        <th scope="col">Files</th>
+        <th scope="col" colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
-
-<p><%= link_to 'All Paths', paths_path %><p>
-<p><%= link_to 'New Cloud File', new_cloud_file_path %><p>
-<p><%= link_to 'Sidekiq', "/sidekiq" %><p>
+    <tbody>
+      <% @cloud_files.each do |cloud_file| %>
+        <% rowclass = cloud_file.percent_complete == 100 ? "table-success" : "table-light" %>
+        <tr scope="row" class="<%= rowclass %>">
+          <td><%= cloud_file.id %></td>
+          <td><%= cloud_file.remote_id %></td>
+          <td><%= link_to cloud_file.filename, cloud_file %></td>
+          <td><%= number_to_human_size(cloud_file.total_downloadable_size) %></td>
+          <td><%= cloud_file.percent_complete %>%</td>
+          <td><%= cloud_file.remote_percent_complete %>%</td>
+          <td><%= cloud_file.content_type %></td>
+          <td><%= cloud_file.status %></td>
+          <td><%= cloud_file.directory %></td>
+          <td><%= time_ago_in_words(cloud_file.remote_created_at) %> ago</td>
+          <td><%= cloud_file.paths.count %></td>
+          <td><%= link_to 'Delete', cloud_files_delete_path(cloud_file), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
