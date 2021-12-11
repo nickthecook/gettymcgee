@@ -47,7 +47,7 @@
 
     <tbody>
       <% @cloud_files.each do |cloud_file| %>
-        <% rowclass = cloud_file.percent_complete == 100 ? "table-success" : "table-light" %>
+        <% rowclass = cloud_file.percent_complete >= 100 ? "table-success" : "table-light" %>
         <tr scope="row" class="<%= rowclass %>">
           <td><%= cloud_file.id %></td>
           <td><%= cloud_file.remote_id %></td>
