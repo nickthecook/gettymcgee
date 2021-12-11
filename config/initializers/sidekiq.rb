@@ -9,8 +9,7 @@ if ENV["RUN_SIDEKIQ"]
   Redis.exists_returns_integer = true
 
   Rails.application.reloader.to_prepare do
-    Sidekiq.logger = Logger.new($stdout)
-    Sidekiq.logger.level = Logger::INFO
+    Sidekiq.logger = Rails.configuration.logger
 
     if cron_config
       Sidekiq::Cron::Job.destroy_all!

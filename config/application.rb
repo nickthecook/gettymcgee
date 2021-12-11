@@ -25,7 +25,9 @@ module Gettymcgee
     config.local_tv_dir = "#{config.local_content_dir}/#{ENV.fetch("LOCAL_TV_DIR") { "tv" }}"
     config.local_movie_dir = "#{config.local_content_dir}/#{ENV.fetch("LOCAL_MOVIE_DIR") { "movies" }}"
 
-    config.logger = Logger.new($stdout)
+    logger = ActiveSupport::Logger.new($stdout)
+    logger.formatter = config.log_formatter
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
     config.log_level = :INFO
 
     config.hosts << "xenon"
