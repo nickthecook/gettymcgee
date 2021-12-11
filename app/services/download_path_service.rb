@@ -22,10 +22,17 @@ class DownloadPathService
       return
     end
 
+    update_path_size
     perform_download
   end
 
   private
+
+  def update_path_size
+    size = HTTParty.head(@path.url).content_length
+
+    @path.update!(size: size)
+  end
 
   def perform_download
     @path.mark_downloading!
