@@ -14,12 +14,11 @@ class OffcloudSyncPathsService
 
     DefaultWorker.perform_async(task: "enqueue_downloads", cloud_file_id: @cloud_file.id)
   rescue Offcloud::Client::RequestError => e
-    case e.to_s
-    when match?(/ECONNREFUSED/)
+    if e.to_s.match?(/ECONNREFUSED/)
       Rails.logger.error("Connection refused while syncing paths for CloudFile #{@cloud_file.id}: #{e}")
-    when match?(/Request not found/)
+    elsif e.to_s.match?(/Request not found/)
       Rails.logger.error("Remote file #{@cloud_file.remote_id} for CloudFile #{@cloud_file.id} not found on remote; marking local as deleted...")
-      @cloud_file.mark_deleted!
+      @cloud_file.mark_deleted! if @cloud_file.may_mark_deleted?
     end
   end
 
