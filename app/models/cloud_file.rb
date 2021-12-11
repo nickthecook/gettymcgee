@@ -92,8 +92,9 @@ class CloudFile < ApplicationRecord
 
   def remote_percent_complete
     return 100 if downloaded?
+    return 0 unless file_size&.positive?
 
-    (remote_amount.to_f / file_size * 100).to_i if file_size&.positive?
+    (remote_amount.to_f / file_size * 100).to_i
   end
 
   def active?
