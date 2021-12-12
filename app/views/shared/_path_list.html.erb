@@ -1,4 +1,4 @@
-<table class="table table-striped table-fit">
+<table class="table table-fit">
   <tr>
     <th>ID</th>
     <th>File</th>
@@ -24,7 +24,8 @@
     <% end %>
   </tr>
   <% @paths.order(:id).each do |path| %>
-    <tr>
+    <% rowclass = path.percent_complete >= 100 ? "table-success" : "table-light" %>
+    <tr scope="row" class="<%= rowclass %>">
       <td><%= path.id %></td>
       <td><a href="<%= path.url %>"><%= path.path %></a></td>
       <td><%= path.status %></td>

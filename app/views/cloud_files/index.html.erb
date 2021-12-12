@@ -38,7 +38,6 @@
         <th scope="col">Remote Complete</th>
         <th scope="col">Content type</th>
         <th scope="col">Status</th>
-        <th scope="col">Is Directory?</th>
         <th scope="col">Remote created</th>
         <th scope="col">Files</th>
         <th scope="col" colspan="3"></th>
@@ -57,7 +56,6 @@
           <td><%= cloud_file.remote_percent_complete %>%</td>
           <td><%= cloud_file.content_type %></td>
           <td><%= cloud_file.status %></td>
-          <td><%= cloud_file.directory %></td>
           <td><%= time_ago_in_words(cloud_file.remote_created_at) %> ago</td>
           <td><%= cloud_file.paths.count %></td>
           <td>
