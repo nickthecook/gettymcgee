@@ -4,6 +4,13 @@ $success: rgb(255, 255, 255);
 // $light: beige;
 // $secondary: orange;
 
+$fa-font-path: '@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/brands';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/regular';
+@import '@fortawesome/fontawesome-free/scss/v4-shims';
+
 // Import Bootstrap v5
 @import "../../../node_modules/bootstrap/scss/bootstrap";
-@import "font-awesome";
+//@import "font-awesome";
