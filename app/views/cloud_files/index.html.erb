@@ -60,7 +60,14 @@
           <td><%= cloud_file.directory %></td>
           <td><%= time_ago_in_words(cloud_file.remote_created_at) %> ago</td>
           <td><%= cloud_file.paths.count %></td>
-          <td><%= link_to 'Delete', cloud_files_delete_path(cloud_file), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <%= button_to 'Delete',
+              cloud_files_delete_path(cloud_file),
+              method: :delete,
+              data: { confirm: 'Are you sure?' },
+              class: "btn btn-warning"
+            %>
+          </td>
         </tr>
       <% end %>
     </tbody>
