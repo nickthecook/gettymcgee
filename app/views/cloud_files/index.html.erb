@@ -57,7 +57,7 @@
           <td><%= cloud_file.content_type %></td>
           <td><%= cloud_file.status %></td>
           <td><%= time_ago_in_words(cloud_file.remote_created_at) %> ago</td>
-          <td><%= cloud_file.paths.count %></td>
+          <td><%= cloud_file.downloadable_paths.count %></td>
           <td>
             <%= button_to 'Delete',
               cloud_files_delete_path(cloud_file),

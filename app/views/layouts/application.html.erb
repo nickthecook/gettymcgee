@@ -13,10 +13,12 @@
   <body class="bg-light">
     <script>setTimeout("location.reload();",10000);</script>
 
-    <%= render "shared/nav" %>
+      <%= render "shared/nav" %>
 
-    <main>
-      <%= yield %>
-    </main>
+    <div class="container-fluid">
+      <main>
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>
