@@ -10,6 +10,8 @@ import "channels"
 
 import '../bootstrap_js_files.js'
 
+require("@fortawesome/fontawesome-free")
+
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
