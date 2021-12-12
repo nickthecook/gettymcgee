@@ -8,6 +8,6 @@
   <%= button_to 'Sync', sync_cloud_files_path(@cloud_file), method: :post %>
 
   <%= render "shared/path_list" %>
-  <%= link_to 'Edit', edit_cloud_file_path(@cloud_file) %> |
-  <%= link_to 'Back', cloud_files_path %>
+
+  <%= link_to 'Back', cloud_files_path, class: "link-secondary" %>
 </div>
