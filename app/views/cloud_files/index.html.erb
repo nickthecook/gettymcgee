@@ -17,9 +17,9 @@
 
       <div class="col">
         <% if params[:show_deleted] %>
-          <%= link_to "Hide deleted", cloud_files_path, class: "text-secondary" %>
+          <%= link_to "Hide deleted", cloud_files_path, class: "link-secondary" %>
         <% else %>
-          <%= link_to "Show deleted", cloud_files_path(show_deleted: true), class: "text-secondary" %>
+          <%= link_to "Show deleted", cloud_files_path(show_deleted: true), class: "link-secondary" %>
         <% end %>
       </div>
     </div>
@@ -50,7 +50,7 @@
         <tr scope="row" class="<%= rowclass %>">
           <td><%= cloud_file.id %></td>
           <td><%= cloud_file.remote_id %></td>
-          <td><%= link_to cloud_file.filename || "TBD", cloud_file %></td>
+          <td><%= link_to cloud_file.filename || "TBD", cloud_file, class: "link-secondary" %></td>
           <td><%= number_to_human_size(cloud_file.total_downloadable_size) %></td>
           <td><%= cloud_file.percent_complete %>%</td>
           <td><%= cloud_file.remote_percent_complete %>%</td>

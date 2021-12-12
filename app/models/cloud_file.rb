@@ -97,11 +97,11 @@ class CloudFile < ApplicationRecord
     %w[created downloading].include?(status)
   end
 
-  private
-
   def downloadable_paths
     @downloadable_paths ||= paths.select(&:downloadable?)
   end
+
+  private
 
   def total_downloaded_size
     downloadable_paths.map(&:amount).sum

@@ -27,7 +27,7 @@
     <% rowclass = path.percent_complete >= 100 ? "table-success" : "table-light" %>
     <tr scope="row" class="<%= rowclass %>">
       <td><%= path.id %></td>
-      <td><a href="<%= path.url %>"><%= path.path %></a></td>
+      <td><a href="<%= path.url %>" class="link-secondary"><%= path.path %></a></td>
       <td><%= path.status %></td>
       <td><%= number_to_human_size(path.amount) %> / <%= number_to_human_size(path.size) %> (<%= path.percent_complete %>%)</td>
       <td>
