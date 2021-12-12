@@ -26,7 +26,7 @@ actions:
     alias: sq
     load_secrets: true
   sidekiq-downloads:
-    command: RUN_SIDEKIQ=true bundle exec sidekiq -c 2 -q download,1
+    command: RUN_SIDEKIQ=true bundle exec sidekiq -c 2 -q download,2
     alias: sqdl
     load_secrets: true
   db-reset:
