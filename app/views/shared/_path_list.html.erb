@@ -29,7 +29,10 @@
     <% last_error = path.sync_errors.last&.message %>
     <tr scope="row" class="<%= rowclass %>">
       <td><%= path.id %></td>
-      <td><a href="<%= path.url %>" class="link-secondary" title="<%= last_error %>"><%= path.path %></a></td>
+      <td>
+        <a href="<%= path.url %>" class="link-secondary" title="<%= last_error %>"><%= path.path %></a>
+        <%= fa_icon "info-circle", title: last_error if last_error %>
+      </td>
       <td><%= path.status %></td>
       <td><%= number_to_human_size(path.amount) %> / <%= number_to_human_size(path.size) %> (<%= path.percent_complete %>%)</td>
       <td>
