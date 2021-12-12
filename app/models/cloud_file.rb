@@ -9,6 +9,7 @@ class CloudFile < ApplicationRecord
   }.freeze
 
   include AASM
+  include Failable
 
   class << self
     def from_object(obj)

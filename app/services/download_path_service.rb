@@ -47,6 +47,8 @@ class DownloadPathService
     @path.mark_downloaded!
   rescue CanceledError
     Rails.logger.info("Canceled download of Path #{@path.id}.")
+  rescue Errno::ECONNREFUSED => e
+    SyncError.create!(failable: @path.id, message: e.to_s)
   end
 
   def dest_dir

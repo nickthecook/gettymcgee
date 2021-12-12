@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_08_034215) do
+ActiveRecord::Schema.define(version: 2021_12_12_184308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,15 @@ ActiveRecord::Schema.define(version: 2021_12_08_034215) do
     t.bigint "amount", default: 0
     t.bigint "size"
     t.index ["cloud_file_id"], name: "index_paths_on_cloud_file_id"
+  end
+
+  create_table "sync_errors", force: :cascade do |t|
+    t.string "failable_type", null: false
+    t.bigint "failable_id", null: false
+    t.string "message", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["failable_type", "failable_id"], name: "index_sync_errors_on_failable"
   end
 
 end

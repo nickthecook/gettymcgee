@@ -4,6 +4,7 @@ class Path < ApplicationRecord
   SKIP_EXTENSTIONS = %w[txt aria2].freeze
 
   include AASM
+  include Failable
 
   belongs_to :cloud_file
 
