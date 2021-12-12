@@ -29,7 +29,7 @@
 <div class="p-3">
   <table class="table">
     <thead>
-      <tr class="table-secondary">
+      <tr>
         <th scope="col">ID</th>
         <th scope="col">Remote ID</th>
         <th scope="col">Filename</th>
@@ -65,7 +65,7 @@
               cloud_files_delete_path(cloud_file),
               method: :delete,
               data: { confirm: 'Are you sure?' },
-              class: "btn btn-warning"
+              class: "btn btn-primary"
             %>
           </td>
         </tr>
