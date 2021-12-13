@@ -5,11 +5,16 @@ require 'httparty'
 module Offcloud
   class Client
     class RequestError < StandardError; end
+    class AuthnError < RequestError; end
 
     class << self
       def url_for(server, request_id, filename)
         "https://#{server}.offcloud.com/cloud/download/#{request_id}/#{filename}"
       end
+    end
+
+    def initialize(logger = nil)
+      @logger = logger
     end
 
     def add(url)
@@ -58,11 +63,14 @@ module Offcloud
     end
 
     def raise_error(resp)
+      raise AuthnError, "Authentication failed" if resp.to_s.match?(/Login to your account/)
+
       raise RequestError, resp.parsed_response
     end
 
     def error?(resp)
       return true unless resp.ok?
+      return true if resp.to_s.match?(/Login to your account/)
 
       resp.parsed_response.is_a?(Hash) && resp.parsed_response["error"].present?
     end
@@ -82,7 +90,8 @@ module Offcloud
     def get(path, query: {}, headers: {}, api: true)
       url = api ? api_url : offcloud_url
 
-      HTTParty.get(
+      request(
+        :get,
         "#{url}/#{path}",
         query: query.merge(key: api_key),
         headers: headers.merge(get_headers)
@@ -96,6 +105,21 @@ module Offcloud
         body: body.to_json,
         headers: headers.merge(post_headers)
       )
+    end
+
+    def request(method, path, **args)
+      log_request(method, path, **args)
+
+      HTTParty.public_send(:get, path, **args)
+    end
+
+    def log_request(method, path, **args)
+      args = args.dup
+      query = args.delete(:query).dup
+      query[:key] = "XXX" if query[:key]
+      query_str = query ? "?#{query.to_query}" : ""
+
+      @logger&.info("#{method.upcase} #{path}#{query_str} #{args.to_json}")
     end
 
     def api_key
