@@ -14,7 +14,7 @@ module Offcloud
     end
 
     def initialize(logger = nil)
-      @logger = logger
+      @logger = logger || Rails&.logger
     end
 
     def add(url)
@@ -76,14 +76,20 @@ module Offcloud
     end
 
     def store(url, dest_path)
+      args = { query: { key: api_key }, stream_body: true }
+
       ::File.open(dest_path, "w") do |file|
         file.binmode
         amount_downloaded = 0
-        HTTParty.get(url, query: { key: api_key }, stream_body: true) do |fragment|
+        resp = HTTParty.get(url, **args) do |fragment|
           file.write(fragment)
           amount_downloaded += fragment.size
           yield(amount_downloaded) if block_given?
         end
+
+        log_request("GET", url, resp, **args)
+
+        resp
       end
     end
 
@@ -108,18 +114,20 @@ module Offcloud
     end
 
     def request(method, path, **args)
-      log_request(method, path, **args)
+      resp = HTTParty.public_send(:get, path, **args)
 
-      HTTParty.public_send(:get, path, **args)
+      log_request(method, path, resp, **args)
+
+      resp
     end
 
-    def log_request(method, path, **args)
+    def log_request(method, path, resp, **args)
       args = args.dup
       query = args.delete(:query).dup
       query[:key] = "XXX" if query[:key]
       query_str = query ? "?#{query.to_query}" : ""
 
-      @logger&.info("#{method.upcase} #{path}#{query_str} #{args.to_json}")
+      @logger&.info("#{method.upcase} #{path}#{query_str} #{args.to_json} #{resp.code}")
     end
 
     def api_key

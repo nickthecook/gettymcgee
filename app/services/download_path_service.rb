@@ -74,6 +74,6 @@ class DownloadPathService
   end
 
   def client
-    @client ||= Offcloud::Client.new
+    @client ||= Offcloud::Client.new(Rails.logger)
   end
 end

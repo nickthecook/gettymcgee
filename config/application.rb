@@ -31,7 +31,5 @@ module Gettymcgee
     config.log_level = :INFO
 
     config.hosts << "xenon"
-    config.hosts << "shard"
-    config.hosts << "rook"
   end
 end
