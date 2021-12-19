@@ -9,7 +9,8 @@ module Offcloud
 
     class << self
       def url_for(server, request_id, filename)
-        "https://#{server}.offcloud.com/cloud/download/#{request_id}/#{filename}"
+
+        "https://#{server}.offcloud.com/cloud/download/#{request_id}/#{CGI.escape(filename)}"
       end
     end
 
