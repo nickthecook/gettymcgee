@@ -292,6 +292,9 @@ GEM
     temple (0.8.2)
     thor (1.1.0)
     tilt (2.0.10)
+    turbo-rails (1.0.0)
+      actionpack (>= 6.0.0)
+      railties (>= 6.0.0)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -347,6 +350,7 @@ DEPENDENCIES
   sidekiq
   sidekiq-cron
   spring
+  turbo-rails
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)
