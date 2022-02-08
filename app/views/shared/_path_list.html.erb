@@ -25,7 +25,7 @@
   </tr>
 
   <% @paths.order(:id).each do |path| %>
-    <% rowclass = path.percent_complete >= 100 ? "table-success" : "table-light" %>
+    <% rowclass = (path.percent_complete && path.percent_complete >= 100) ? "table-success" : "table-light" %>
     <% last_error = path.sync_errors.last&.message %>
     <tr scope="row" class="<%= rowclass %>">
       <td><%= path.id %></td>
