@@ -18,6 +18,7 @@
           "task": "sync_offcloud_paths"
         }
       }
-    }
+    },
+    "CONFIG_HOSTS": ["xenon", "group18.hopto.org"]
   }
 }
