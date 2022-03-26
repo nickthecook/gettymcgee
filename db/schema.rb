@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_12_184308) do
+ActiveRecord::Schema.define(version: 2022_03_26_184701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_calls", force: :cascade do |t|
+    t.integer "service"
+    t.string "url"
+    t.jsonb "request"
+    t.jsonb "response"
+    t.integer "status_code"
+    t.string "error"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "cloud_files", force: :cascade do |t|
     t.string "remote_id"

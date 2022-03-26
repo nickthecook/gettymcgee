@@ -26,4 +26,8 @@ class DefaultWorker < BaseWorker
   def remove_cloud_file(**args)
     OffcloudRemoveFileService.new(**args).execute
   end
+
+  def clean_api_calls(**_args)
+    CleanApiCallsService.new.execute
+  end
 end

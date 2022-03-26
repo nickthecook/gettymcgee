@@ -30,6 +30,6 @@ module Gettymcgee
     config.logger = ActiveSupport::TaggedLogging.new(logger)
     config.log_level = :INFO
 
-    config.hosts << "xenon"
+    config.hosts = JSON.parse(ENV["CONFIG_HOSTS"] || "[]")
   end
 end

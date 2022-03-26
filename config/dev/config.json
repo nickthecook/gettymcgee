@@ -17,6 +17,13 @@
         "args": {
           "task": "sync_offcloud_paths"
         }
+      },
+      "clean_api_calls": {
+        "cron": "*/15 * * * *",
+        "class": "DefaultWorker",
+        "args": {
+          "task": "clean_api_calls"
+        }
       }
     },
     "CONFIG_HOSTS": ["xenon", "group18.hopto.org"]

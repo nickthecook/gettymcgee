@@ -106,18 +106,24 @@ module Offcloud
     end
 
     def post(path, query: {}, body: {}, headers: {})
-      HTTParty.post(
+      resp = HTTParty.post(
         "#{api_url}/#{path}",
         query: query.merge(key: api_key),
         body: body.to_json,
         headers: headers.merge(post_headers)
       )
+
+      puts resp.request.options[:body]
+      log_api_call(resp)
+
+      resp
     end
 
     def request(method, path, **args)
       resp = HTTParty.public_send(:get, path, **args)
 
       log_request(method, path, resp, **args)
+      log_api_call(resp)
 
       resp
     end
@@ -129,6 +135,30 @@ module Offcloud
       query_str = query ? "?#{query.to_query}" : ""
 
       @logger&.info("#{method.upcase} #{path}#{query_str} #{args.to_json} #{resp.code}")
+    end
+
+    def log_api_call(response)
+      ApiCall.create!(
+        service: :offcloud,
+        method: method_name_for_response(response),
+        url: response.request.last_uri.to_s,
+        request: response.request.options[:body],
+        response: JSON.parse(response.body),
+        status_code: response.code
+      )
+    rescue JSON::ParserError => e
+      ApiCall.create!(
+        service: :offcloud,
+        method: method_name_for_response(response),
+        url: response.request.last_uri.to_s,
+        request: response.request.options[:body],
+        status_code: response.code,
+        error: response.body
+      )
+    end
+
+    def method_name_for_response(response)
+      response.request.http_method.name.split("::").last.downcase.to_sym
     end
 
     def api_key
