@@ -30,6 +30,11 @@ RSpec.describe Offcloud::Client do
         expect(HTTParty).to receive(:get).with("https://offcloud.com/api/cloud/history", query: { key: "1234" })
         result
       end
+
+      it "creates an ApiCall" do
+        result
+        expect(ApiCall.count).to eq(1)
+      end
     end
   end
 end
