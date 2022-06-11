@@ -26,6 +26,6 @@
         }
       }
     },
-    "CONFIG_HOSTS": ["xenon", "group18.hopto.org"]
+    "CONFIG_HOSTS": ["xenon", "group18.hopto.org", "localhost"]
   }
 }
