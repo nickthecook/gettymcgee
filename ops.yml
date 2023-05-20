@@ -12,6 +12,7 @@ dependencies:
   custom:
     - bundle
     - yarn
+    - bin/rails webpacker:install
 actions:
   server:
     command: bundle exec rails server -b 0.0.0.0

@@ -1,0 +1,3 @@
+web: ops server
+sidekiq: ops sidekiq-default
+sidekiq-dl: ops sidekiq-downloads
