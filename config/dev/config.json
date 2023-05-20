@@ -1,6 +1,6 @@
 {
   "environment": {
-    "LOCAL_STORAGE_DIR": "/mnt/quasar/Multimedia",
+    "LOCAL_STORAGE_DIR": "/mnt/multimedia",
     "LOCAL_TV_DIR": "TV",
     "LOCAL_MOVIE_DIR": "Videos",
     "SIDEKIQ_CRON": {
@@ -26,6 +26,6 @@
         }
       }
     },
-    "CONFIG_HOSTS": ["xenon", "group18.hopto.org", "localhost"]
+    "CONFIG_HOSTS": ["shard", "127.0.0.1", "xenon", "group18.hopto.org", "localhost"]
   }
 }
